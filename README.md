@@ -1,3 +1,6 @@
+https://github.com/pslib-cz/2024-p3a-web-gamebook-pesser-herman.git
+
+
 Gamebook projekt: Edvins choice
 
 Základní script:
