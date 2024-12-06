@@ -1,5 +1,6 @@
 [https://github.com/pslib-cz/2024-p3a-web-gamebook-pesser-herman.git
 ](https://www.figma.com/design/z2ODX5tdjmZbsnkg5Q4L8V/Untitled?node-id=0-1&node-type=canvas&t=ZNLzj7uHGdryO7Aw-0)
+https://drive.google.com/file/d/1guF3gHpZrv0kL_6gtfaYwSj7ure-fsXK/view?usp=sharing
 
 Gamebook projekt: Edvins choice
 
