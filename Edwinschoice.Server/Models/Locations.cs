@@ -4,14 +4,15 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Edwinschoice.Server.Models
 {
-    public class Locations : Items
+    public class Locations
     {
         public int LocationId { get; set; }
         public required string LocationName { get; set; }
-        public required string Description { get; set; }
-        public required byte[] BackgroundImage { get; set; }
-        public bool Reobtainable { get; set; }
-        public Items? ItemId { get; set; }
+        public required string LocationDescription { get; set; }
+        public required byte[] LocationImage { get; set; }
+        public bool? ItemReobtainable { get; set; }
+        public int? ItemId { get; set; }
+        public Items? Item { get; set; }
 
     }
 }
