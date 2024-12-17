@@ -4,7 +4,7 @@ namespace Edwinschoice.Server.Models
 {
     public class Items
     {
-        public int ItemId { get; set; }
+        public int ItemsId { get; set; }
         public required string ItemName { get; set; }
         public int? Health { get; set; }
         public int? Attack {  get; set; }

@@ -6,7 +6,7 @@ namespace Edwinschoice.Server.Models
 {
     public class Locations
     {
-        public int LocationId { get; set; }
+        public int LocationsId { get; set; }
         public required string LocationName { get; set; }
         public required string LocationDescription { get; set; }
         public required byte[] LocationImage { get; set; }

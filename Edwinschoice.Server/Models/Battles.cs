@@ -1,8 +1,12 @@
-﻿namespace Edwinschoice.Server.Models
+﻿
+using System.ComponentModel.DataAnnotations;
+namespace Edwinschoice.Server.Models
 {
     public class Battles
     {
-        public int BattleId { get; set; }
+
+       
+        public int BattlesId { get; set; }
         public required string EnemyName { get; set; }
         public required int Health { get; set; }
         public required int Defense { get; set; }
