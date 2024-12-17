@@ -2,7 +2,6 @@
 using Edwinschoice.Server.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
@@ -11,43 +10,37 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Edwinschoice.Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241217191943_Gamebook")]
+    [Migration("20241217211513_Gamebook")]
     partial class Gamebook
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.0")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128);
-
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+            modelBuilder.HasAnnotation("ProductVersion", "9.0.0");
 
             modelBuilder.Entity("Edwinschoice.Server.Models.Battles", b =>
                 {
                     b.Property<int>("BattlesId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BattlesId"));
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("Attack")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<byte[]>("BackroundImage")
                         .IsRequired()
-                        .HasColumnType("varbinary(max)");
+                        .HasColumnType("BLOB");
 
                     b.Property<int>("Defense")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("EnemyName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("Health")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("BattlesId");
 
@@ -58,27 +51,29 @@ namespace Edwinschoice.Server.Migrations
                 {
                     b.Property<int>("ConnectionsId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ConnectionsId"));
+                        .HasColumnType("INTEGER");
 
                     b.Property<int?>("BattlesId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("FromId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int?>("LocationId")
-                        .HasColumnType("int");
+                    b.Property<int?>("LocationsId")
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("ToId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("ConnectionsId");
 
                     b.HasIndex("BattlesId");
 
-                    b.HasIndex("LocationId");
+                    b.HasIndex("FromId");
+
+                    b.HasIndex("LocationsId");
+
+                    b.HasIndex("ToId");
 
                     b.ToTable("Connections");
                 });
@@ -87,21 +82,19 @@ namespace Edwinschoice.Server.Migrations
                 {
                     b.Property<int>("EndingsId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EndingsId"));
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("EndingDescription")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
 
                     b.Property<byte[]>("EndingImage")
                         .IsRequired()
-                        .HasColumnType("varbinary(max)");
+                        .HasColumnType("BLOB");
 
                     b.Property<string>("EndingName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
 
                     b.HasKey("EndingsId");
 
@@ -112,32 +105,30 @@ namespace Edwinschoice.Server.Migrations
                 {
                     b.Property<int>("ItemsId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ItemsId"));
+                        .HasColumnType("INTEGER");
 
                     b.Property<int?>("Attack")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<int?>("Defense")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<int?>("Health")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<byte[]>("ItemImage")
                         .IsRequired()
-                        .HasColumnType("varbinary(max)");
+                        .HasColumnType("BLOB");
 
                     b.Property<string>("ItemName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
 
                     b.Property<bool>("forStory")
-                        .HasColumnType("bit");
+                        .HasColumnType("INTEGER");
 
                     b.Property<bool>("isConsumable")
-                        .HasColumnType("bit");
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("ItemsId");
 
@@ -148,27 +139,25 @@ namespace Edwinschoice.Server.Migrations
                 {
                     b.Property<int>("LocationsId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("LocationsId"));
+                        .HasColumnType("INTEGER");
 
                     b.Property<int?>("ItemId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<bool?>("ItemReobtainable")
-                        .HasColumnType("bit");
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("LocationDescription")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
 
                     b.Property<byte[]>("LocationImage")
                         .IsRequired()
-                        .HasColumnType("varbinary(max)");
+                        .HasColumnType("BLOB");
 
                     b.Property<string>("LocationName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
 
                     b.HasKey("LocationsId");
 
@@ -183,13 +172,29 @@ namespace Edwinschoice.Server.Migrations
                         .WithMany()
                         .HasForeignKey("BattlesId");
 
-                    b.HasOne("Edwinschoice.Server.Models.Locations", "Location")
+                    b.HasOne("Edwinschoice.Server.Models.Locations", "From")
                         .WithMany()
-                        .HasForeignKey("LocationId");
+                        .HasForeignKey("FromId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Edwinschoice.Server.Models.Locations", "Locations")
+                        .WithMany()
+                        .HasForeignKey("LocationsId");
+
+                    b.HasOne("Edwinschoice.Server.Models.Locations", "To")
+                        .WithMany()
+                        .HasForeignKey("ToId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Battle");
 
-                    b.Navigation("Location");
+                    b.Navigation("From");
+
+                    b.Navigation("Locations");
+
+                    b.Navigation("To");
                 });
 
             modelBuilder.Entity("Edwinschoice.Server.Models.Locations", b =>
