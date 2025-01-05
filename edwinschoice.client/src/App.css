@@ -5,30 +5,7 @@
     text-align: center;
 }
 
-tr:nth-child(even) {
-    background: #F2F2F2;
-}
-
-tr:nth-child(odd) {
-    background: #FFF;
-}
-
 th, td {
     padding-left: 1rem;
     padding-right: 1rem;
-}
-
-.app-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    text-align: center;
-    margin: 0 auto;
-}
-
-main {
-    width: 100%;
-    max-width: 800px;
-    padding: 1rem;
 }
