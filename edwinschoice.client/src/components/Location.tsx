@@ -1,18 +1,22 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
+
 interface Location {
     locationName: string;
     locationDescription: string;
 }
+
 interface Connection {
     toId: number;
     locationName: string;
     locationDescription: string;
 }
+
 function Location() {
     const { id } = useParams<{ id: string }>();
     const [location, setLocation] = useState<Location | null>(null);
     const [connections, setConnections] = useState<Connection[]>([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
         fetch(`/api/Locations/${id}`)
@@ -24,6 +28,7 @@ function Location() {
             })
             .then((data) => setLocation(data))
             .catch((error) => console.error('Error fetching location:', error));
+
         fetch(`/api/Locations/${id}/connections`)
             .then((response) => {
                 if (!response.ok) {
@@ -34,6 +39,11 @@ function Location() {
             .then((data) => setConnections(data))
             .catch((error) => console.error('Error fetching connections:', error));
     }, [id]);
+
+    const handleNavigate = (toId: number) => {
+        navigate(`/location/${toId}`);
+    };
+
     return (
         <div>
             {location ? (
@@ -45,9 +55,9 @@ function Location() {
                     <ul>
                         {connections.map((connection) => (
                             <li key={connection.toId}>
-                                <Link to={`/location/${connection.toId}`}>
+                                <button onClick={() => handleNavigate(connection.toId)}>
                                     {connection.locationName}
-                                </Link>
+                                </button>
                             </li>
                         ))}
                     </ul>
