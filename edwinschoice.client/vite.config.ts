@@ -20,6 +20,6 @@ export default defineConfig({
                 secure: false
             }
         },
-        port: 5173
+        port: 7083
     }
 });
