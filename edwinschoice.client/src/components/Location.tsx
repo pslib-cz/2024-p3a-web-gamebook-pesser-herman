@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
+import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
 interface Location {
@@ -19,7 +20,7 @@ function Location() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        fetch(`/api/Locations/${id}`)
+        fetch(`http://localhost:5173/api/Locations/${id}`)
             .then((response) => {
                 if (!response.ok) {
                     throw new Error('Failed to fetch location');
@@ -29,7 +30,7 @@ function Location() {
             .then((data) => setLocation(data))
             .catch((error) => console.error('Error fetching location:', error));
 
-        fetch(`/api/Locations/${id}/connections`)
+        fetch(`http://localhost:5173/api/Locations/${id}/connections`)
             .then((response) => {
                 if (!response.ok) {
                     throw new Error('Failed to fetch connections');
