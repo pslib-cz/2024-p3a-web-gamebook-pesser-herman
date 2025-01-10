@@ -1,4 +1,3 @@
-import React from 'react';
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
@@ -20,7 +19,7 @@ function Location() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        fetch(`http://localhost:7083/api/Locations/${id}`)
+        fetch(`https://localhost:7083/api/Locations/${id}`)
             .then((response) => {
                 if (!response.ok) {
                     throw new Error('Failed to fetch location');
@@ -30,7 +29,7 @@ function Location() {
             .then((data) => setLocation(data))
             .catch((error) => console.error('Error fetching location:', error));
 
-        fetch(`http://localhost:7083/api/Locations/${id}/connections`)
+        fetch(`https://localhost:7083/api/Locations/${id}/connections`)
             .then((response) => {
                 if (!response.ok) {
                     throw new Error('Failed to fetch connections');
