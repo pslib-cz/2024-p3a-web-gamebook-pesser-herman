@@ -12,6 +12,8 @@ interface Connection {
     locationDescription: string;
 }
 
+const apiUrl = import.meta.env.VITE_API_URL
+
 function Location() {
     const { id } = useParams<{ id: string }>();
     const [location, setLocation] = useState<Location | null>(null);
@@ -19,7 +21,7 @@ function Location() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        fetch(`https://localhost:7083/api/Locations/${id}`)
+        fetch(`${apiUrl}/api/Locations/${id}`)
             .then((response) => {
                 if (!response.ok) {
                     throw new Error('Failed to fetch location');
@@ -29,7 +31,7 @@ function Location() {
             .then((data) => setLocation(data))
             .catch((error) => console.error('Error fetching location:', error));
 
-        fetch(`https://localhost:7083/api/Locations/${id}/connections`)
+        fetch(`${apiUrl}/api/Locations/${id}/connections`)
             .then((response) => {
                 if (!response.ok) {
                     throw new Error('Failed to fetch connections');
