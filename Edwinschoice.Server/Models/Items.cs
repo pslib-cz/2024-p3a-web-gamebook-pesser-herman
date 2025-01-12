@@ -11,6 +11,6 @@ namespace Edwinschoice.Server.Models
         public int? Defense { get; set; }
         public bool isConsumable { get; set; }
         public bool forStory { get; set; }
-        public required byte[] ItemImage { get; set; }
+        public required string ItemImagePath { get; set; }
     }
 }

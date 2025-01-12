@@ -92,7 +92,8 @@ namespace Edwinschoice.Server.Migrations
                     FromId = table.Column<int>(type: "INTEGER", nullable: false),
                     ToId = table.Column<int>(type: "INTEGER", nullable: false),
                     LocationsId = table.Column<int>(type: "INTEGER", nullable: true),
-                    BattlesId = table.Column<int>(type: "INTEGER", nullable: true)
+                    BattlesId = table.Column<int>(type: "INTEGER", nullable: true),
+                    ConnectionText = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {

@@ -2,6 +2,7 @@
 using Edwinschoice.Server.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -9,9 +10,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Edwinschoice.Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250112183753_update_items")]
+    partial class update_items
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.0");
@@ -60,9 +63,6 @@ namespace Edwinschoice.Server.Migrations
                     b.Property<int>("FromId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("ItemId")
-                        .HasColumnType("INTEGER");
-
                     b.Property<int?>("LocationsId")
                         .HasColumnType("INTEGER");
 
@@ -74,8 +74,6 @@ namespace Edwinschoice.Server.Migrations
                     b.HasIndex("BattlesId");
 
                     b.HasIndex("FromId");
-
-                    b.HasIndex("ItemId");
 
                     b.HasIndex("LocationsId");
 
@@ -184,10 +182,6 @@ namespace Edwinschoice.Server.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Edwinschoice.Server.Models.Items", "Item")
-                        .WithMany()
-                        .HasForeignKey("ItemId");
-
                     b.HasOne("Edwinschoice.Server.Models.Locations", "Locations")
                         .WithMany()
                         .HasForeignKey("LocationsId");
@@ -201,8 +195,6 @@ namespace Edwinschoice.Server.Migrations
                     b.Navigation("Battle");
 
                     b.Navigation("From");
-
-                    b.Navigation("Item");
 
                     b.Navigation("Locations");
 

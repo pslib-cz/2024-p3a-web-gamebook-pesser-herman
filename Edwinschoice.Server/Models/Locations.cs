@@ -9,7 +9,7 @@ namespace Edwinschoice.Server.Models
         public int LocationsId { get; set; }
         public required string LocationName { get; set; }
         public required string LocationDescription { get; set; }
-        public required byte[] LocationImage { get; set; }
+        public required string LocationImagePath { get; set; }
         public bool? ItemReobtainable { get; set; }
         public int? ItemId { get; set; }
         public Items? Item { get; set; }
