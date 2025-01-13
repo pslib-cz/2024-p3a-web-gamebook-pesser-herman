@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { useInventory } from "./PlayerComponent";
 
 interface Location {
     locationName: string;
@@ -14,6 +15,8 @@ interface Item {
     itemsId: number;
     itemName: string;
     itemImagePath: string;
+    isConsumable: boolean;
+    forStory: boolean;
 }
 
 interface Connection {
@@ -29,27 +32,19 @@ function Location() {
     const { id } = useParams<{ id: string }>();
     const [location, setLocation] = useState<Location | null>(null);
     const [connections, setConnections] = useState<Connection[]>([]);
+    const { addItemToInventory } = useInventory();
     const navigate = useNavigate();
 
     useEffect(() => {
         fetch(`${apiUrl}/api/Locations/${id}`)
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error('Failed to fetch location');
-                }
-                return response.json();
-            })
-            .then((data) => setLocation(data))
-            .catch((error) => console.error('Error fetching location:', error));
+            .then((response) => response.json())
+            .then(setLocation)
+            .catch(console.error);
+
         fetch(`${apiUrl}/api/Locations/${id}/connections`)
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error('Failed to fetch connections');
-                }
-                return response.json();
-            })
-            .then((data) => setConnections(data))
-            .catch((error) => console.error('Error fetching connections:', error));
+            .then((response) => response.json())
+            .then(setConnections)
+            .catch(console.error);
     }, [id]);
 
     const handleNavigate = (toId: number) => {
@@ -58,6 +53,8 @@ function Location() {
 
     const handleItemClick = () => {
         if (!location || !location.item) return;
+
+        addItemToInventory(location.item);
 
         if (!location.itemReobtainable) {
             setLocation((prev) =>
@@ -76,23 +73,21 @@ function Location() {
                         <img
                             src={`${apiUrl}${location.locationImagePath}`}
                             alt={location.locationName}
-                            style={{ maxWidth: '100%', height: 'auto' }}
+                            style={{ maxWidth: "100%", height: "auto" }}
                         />
                     )}
-
                     {location.item && (
                         <div>
                             <h2>Item</h2>
                             <img
                                 src={`${apiUrl}${location.item.itemImagePath}`}
                                 alt={location.item.itemName}
-                                style={{ cursor: 'pointer', maxWidth: '100px', height: 'auto' }}
+                                style={{ cursor: "pointer", maxWidth: "100px", height: "auto" }}
                                 onClick={handleItemClick}
                             />
                             <p>{location.item.itemName}</p>
                         </div>
                     )}
-
                     <h2>Connections</h2>
                     <ul>
                         {connections.map((connection) => (
