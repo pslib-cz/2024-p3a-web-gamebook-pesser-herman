@@ -1,0 +1,63 @@
+.menu_background {
+    background-size: cover; /* Ensure the image covers the entire container */
+    background-position: center; /* Center the image */
+    background-repeat: no-repeat; /* Prevent the image from repeating */
+    height: 100vh; /* Full height of the viewport */
+    display: flex; /* Flex container */
+
+    align-items: center; /* Center vertically */
+    flex-direction: column; /* Stack items vertically */
+}
+
+.menu-container {
+    text-align: center; /* Center text within the container */
+}
+
+
+
+body {
+    display: block !important; /* Override flex layout */
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    margin-top: 10rem;
+    color: red;
+    font-family: 'Island Moments', sans-serif;
+    font:'Island Moments';
+    font-size: 3.2em;
+    line-height: 1.1;
+}
+
+
+
+button {
+    margin-top: 20px;
+    ButtonText:black;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    padding: 0.3em .6em;
+    font-size: 2em;
+    font-weight: 500;
+    font-family: inherit;
+    background-color: #1a1a1a;
+    cursor: pointer;
+    transition: border-color 0.25s;
+    border-width: 5px;
+    border-color: gray;
+    color:black
+    
+}
+
+    button:hover {
+        border-block-color:gray;
+        background-color:saddlebrown;
+       transition:  .2s ease-in-out;
+       color:red;
+    }
+
+    button:focus,
+    button:focus-visible {
+        outline: 4px auto -webkit-focus-ring-color;
+    }

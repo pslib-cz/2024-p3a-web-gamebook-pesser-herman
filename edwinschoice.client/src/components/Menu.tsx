@@ -1,11 +1,19 @@
 import { Link } from 'react-router-dom';
+import './Menu.css';
+
+const apiUrl = import.meta.env.VITE_API_URL;
 
 function Menu() {
     return (
-        <div>
-            <h1>Game Menu</h1>
+        <div
+            className="menu_background"
+            style={{ backgroundImage: `url(${apiUrl}/images/Castle_image.webp)` }}
+        >
+            <div className="menu-container">
+                <h1>Edwins choice</h1>
+            </div>
             <Link to="/location/1">
-                <button>Go to Location 1</button>
+                <button>Nová hra</button>
             </Link>
         </div>
     );

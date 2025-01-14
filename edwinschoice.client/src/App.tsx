@@ -6,14 +6,10 @@ import PlayerComponent from './components/PlayerComponent';
 function App() {
     return (
         <Router>
-            <PlayerComponent>
-                <div>
-                    <Routes>
-                        <Route path="/" element={<Menu />} />
-                        <Route path="/location/:id" element={<Location />} />
-                    </Routes>
-                </div>
-            </PlayerComponent>
+            <Routes>
+                <Route path="/" element={<Menu />} />
+                <Route path="/location/:id" element={<PlayerComponent><Location/></PlayerComponent>} />
+            </Routes>
         </Router>
     );
 }

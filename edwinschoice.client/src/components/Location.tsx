@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useInventory } from "./PlayerComponent";
+import './Location.css';
 
 interface Location {
     locationName: string;
@@ -67,16 +68,11 @@ function Location() {
     return (
         <div>
             {location ? (
-                <div>
+                <div className="location_background"
+                    style={{ backgroundImage: `url(${apiUrl}${location.locationImagePath})` }}>
                     <h1>{location.locationName}</h1>
-                    <p>{location.locationDescription}</p>
-                    {location.locationImagePath && (
-                        <img
-                            src={`${apiUrl}${location.locationImagePath}`}
-                            alt={location.locationName}
-                            style={{ maxWidth: "100%", height: "auto" }}
-                        />
-                    )}
+                    <p className="story_text" style={{ backgroundImage: `url(${apiUrl}/images/dialog_background.webp)` }}>{location.locationDescription}</p>
+            
                     {location.item && (
                         <div>
                             <h2>Pøedmìt</h2>
