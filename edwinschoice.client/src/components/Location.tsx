@@ -14,6 +14,7 @@ interface Location {
 interface Item {
     itemsId: number;
     itemName: string;
+    itemDescription: string;
     itemImagePath: string;
     isConsumable: boolean;
     forStory: boolean;
@@ -78,7 +79,7 @@ function Location() {
                     )}
                     {location.item && (
                         <div>
-                            <h2>Item</h2>
+                            <h2>Pøedmìt</h2>
                             <img
                                 src={`${apiUrl}${location.item.itemImagePath}`}
                                 alt={location.item.itemName}
@@ -88,7 +89,7 @@ function Location() {
                             <p>{location.item.itemName}</p>
                         </div>
                     )}
-                    <h2>Connections</h2>
+                    <h2>Spojení</h2>
                     <ul>
                         {connections.map((connection) => (
                             <li key={connection.toId}>

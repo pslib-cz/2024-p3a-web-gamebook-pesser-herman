@@ -79,7 +79,13 @@ namespace Edwinschoice.Server.Controllers
                 {
                     location.Item.ItemsId,
                     location.Item.ItemName,
-                    location.Item.ItemImagePath
+                    location.Item.ItemImagePath,
+                    location.Item.isConsumable,
+                    location.Item.forStory,
+                    location.Item.ItemDescription,
+                    location.Item.Health,
+                    location.Item.Attack,
+                    location.Item.Defense
                 } : null
             });
         }

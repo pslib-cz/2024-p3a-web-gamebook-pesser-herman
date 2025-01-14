@@ -3,6 +3,7 @@ import React, { createContext, useContext, useState, ReactNode } from "react";
 interface Item {
     itemsId: number;
     itemName: string;
+    itemDescription: string;
     health?: number;
     attack?: number;
     defense?: number;
@@ -73,14 +74,12 @@ const PlayerComponent: React.FC<{ children: ReactNode }> = ({ children }) => {
         }));
 
         setInventory((prevInventory) => {
-            const existingItem = prevInventory[item.itemsId];
+            const updatedInventory = { ...prevInventory };
+            const existingItem = updatedInventory[item.itemsId];
             if (!existingItem) return prevInventory;
 
-            const newCount = existingItem.count - 1;
-            const updatedInventory = { ...prevInventory };
-
-            if (newCount > 0) {
-                updatedInventory[item.itemsId] = { ...existingItem, count: newCount };
+            if (existingItem.count > 1) {
+                updatedInventory[item.itemsId] = { ...existingItem, count: existingItem.count - 1 };
             } else {
                 delete updatedInventory[item.itemsId];
             }
@@ -127,7 +126,9 @@ const PlayerComponent: React.FC<{ children: ReactNode }> = ({ children }) => {
 
                 <h2>Inventory</h2>
                 <ul>
-                    {Object.values(inventory).map(({ item, count }) => (
+                    {Object.values(inventory).map(({ item, count }) => {
+                        console.log(item);
+                        return (
                         <li key={item.itemsId}>
                             <img
                                 src={`${import.meta.env.VITE_API_URL}${item.itemImagePath}`}
@@ -135,14 +136,15 @@ const PlayerComponent: React.FC<{ children: ReactNode }> = ({ children }) => {
                                 style={{ width: "50px", height: "50px" }}
                             />
                             {item.itemName} (x{count})
-                            {item.isConsumable && (
+                            {item.itemDescription}
+                            {item.isConsumable && !item.forStory && (
                                 <button onClick={() => handleUseItem(item)}>Použít</button>
                             )}
                             {!item.isConsumable && !item.forStory && (
                                 <button onClick={() => equipItem(item)}>Nasadit</button>
                             )}
-                        </li>
-                    ))}
+                        </li>)
+                    })}
                 </ul>
                 {children}
             </div>
