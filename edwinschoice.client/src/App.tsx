@@ -8,7 +8,7 @@ function App() {
         <Router>
             <Routes>
                 <Route path="/" element={<Menu />} />
-                <Route path="/location/:id" element={<PlayerComponent><Location/></PlayerComponent>} />
+                <Route path="/location/:id" element={<PlayerComponent><Location /></PlayerComponent>} />
             </Routes>
         </Router>
     );

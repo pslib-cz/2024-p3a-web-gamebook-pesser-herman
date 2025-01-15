@@ -25,27 +25,20 @@ interface PlayerStats {
     equippedArmor: Item | null;
 }
 
-interface PlayerContextType {
+interface InventoryContextType {
     inventory: { [key: number]: InventoryItem };
     playerStats: PlayerStats;
     addItemToInventory: (item: Item) => void;
     handleUseItem: (item: Item) => void;
     equipItem: (item: Item) => void;
-    isItemInInventory: (itemId: number) => boolean; 
-    canAccessConnection: (requiredItemId?: number | null) => boolean;
-    visitedLocations: Set<number>; // To track visited locations by their IDs
-    markLocationVisited: (locationId: number) => void;
-    hasVisitedLocation: (locationId: number) => boolean;
 }
 
+const InventoryContext = createContext<InventoryContextType | undefined>(undefined);
 
-
-const PlayerContext = createContext<PlayerContextType | undefined>(undefined);
-
-export const usePlayer = (): PlayerContextType => {
-    const context = useContext(PlayerContext);
+export const useInventory = (): InventoryContextType => {
+    const context = useContext(InventoryContext);
     if (!context) {
-        throw new Error("usePlayer must be used within a PlayerComponent");
+        throw new Error("useInventory must be used within a PlayerComponent");
     }
     return context;
 };
@@ -121,73 +114,12 @@ const PlayerComponent: React.FC<{ children: ReactNode }> = ({ children }) => {
         });
     };
 
-    const isItemInInventory = (itemId: number): boolean => {
-        return !!inventory[itemId];
-    };
-
-    const isItemEquipped = (item: Item): boolean => {
-        return (
-            playerStats.equippedWeapon?.itemsId === item.itemsId ||
-            playerStats.equippedArmor?.itemsId === item.itemsId
-        );
-    };
-
-    const canAccessConnection = (requiredItemId?: number | null): boolean => {
-        console.log(`Checking access for ItemId: ${requiredItemId}`);
-        if (requiredItemId === null || requiredItemId === undefined) return true;
-        const hasItem = isItemInInventory(requiredItemId);
-        console.log(`Item ${requiredItemId} in inventory: ${hasItem}`);
-        return hasItem;
-    };
-
-    const [visitedLocations, setVisitedLocations] = useState<Set<number>>(new Set());
-
-    const markLocationVisited = (locationId: number) => {
-        setVisitedLocations((prev) => new Set(prev).add(locationId));
-    };
-
-    const hasVisitedLocation = (locationId: number): boolean => {
-        return visitedLocations.has(locationId);
-    };
-
     return (
-        <PlayerContext.Provider
-            value={{ inventory, playerStats, addItemToInventory, handleUseItem, equipItem, isItemInInventory, canAccessConnection, visitedLocations, markLocationVisited, hasVisitedLocation }}
+        <InventoryContext.Provider
+            value={{ inventory, playerStats, addItemToInventory, handleUseItem, equipItem }}
         >
-            <div>
-                <h1>Player Stats</h1>
-                <p>Health: {playerStats.health}</p>
-                <p>Attack: {playerStats.attack}</p>
-                <p>Defense: {playerStats.defense}</p>
-
-                <h2>Inventory</h2>
-                <ul>
-                    {Object.values(inventory).map(({ item, count }) => (
-                        <li key={item.itemsId}>
-                            <img
-                                src={`${import.meta.env.VITE_API_URL}${item.itemImagePath}`}
-                                alt={item.itemName}
-                                style={{ width: "50px", height: "50px" }}
-                            />
-                            {item.itemName} (x{count})
-                            {item.itemDescription}
-                            {item.isConsumable && !item.forStory && (
-                                <button onClick={() => handleUseItem(item)}>Use</button>
-                            )}
-                            {!item.isConsumable && !item.forStory && (
-                                isItemEquipped(item) ? (
-                                    <span>Equipped</span>
-                                ) : (
-                                    <button onClick={() => equipItem(item)}>Equip</button>
-                                )
-                            )}
-                        </li>
-                    ))}
-                </ul>
-                {children}
-            </div>
-        </PlayerContext.Provider>
-        
+            {children}
+        </InventoryContext.Provider>
     );
 };
 

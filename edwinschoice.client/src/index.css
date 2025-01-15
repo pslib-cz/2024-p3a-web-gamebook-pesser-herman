@@ -28,11 +28,11 @@ body {
     height: 100%;
     background-color: #242424;
     display: flex;
-    justify-content: center; /* Centers the content horizontally */
+    justify-content: center; 
 }
 
 
-/* Root styling */
+
 #root {
     width: 100%;
     height: 100%;
@@ -41,26 +41,26 @@ body {
     align-items: stretch;
 }
 
-/* Responsive styling for mobile */
+
 @media (max-width: 767px) {
     body {
-        display: block; /* Allows for more natural layout on small screens */
+        display: block;
     }
 
     #root {
-        display: block; /* Makes sure root behaves as a block-level element on small screens */
+        display: block; 
     }
 
     h1 {
-        font-size: 2.5em; /* Smaller font size for mobile */
+        font-size: 2.5em; 
     }
 
     button {
-        padding: 0.5em 1em; /* Adjust button padding for mobile */
+        padding: 0.5em 1em; 
     }
 }
 
-/* Light mode specific styles */
+
 @media (prefers-color-scheme: light) {
     :root {
         color: #213547;
