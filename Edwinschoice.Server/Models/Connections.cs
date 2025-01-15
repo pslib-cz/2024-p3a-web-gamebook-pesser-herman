@@ -9,7 +9,7 @@ namespace Edwinschoice.Server.Models
         public int FromId { get; set; }
         public int ToId { get; set; }
         public int? LocationsId { get; set; }
-        public required string ConnectionText { get; set; }
+        public string? ConnectionText { get; set; }
         public int? ItemId { get; set; }
         public int? BattlesId { get; set; }
         public Locations? Locations { get; set; }

@@ -39,7 +39,8 @@ namespace Edwinschoice.Server.Controllers
                     c.ToId,
                     c.To.LocationName,
                     c.To.LocationDescription,
-                    c.ConnectionText
+                    c.ConnectionText,
+                    c.ItemId
                 })
                 .ToList();
 

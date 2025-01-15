@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { useInventory } from "./PlayerComponent";
+import { usePlayer } from "./PlayerComponent";
 import './Location.css';
 
 interface Location {
@@ -26,6 +26,7 @@ interface Connection {
     locationName: string;
     locationDescription: string;
     connectionText: string;
+    ItemId?: number | null;
 }
 
 const apiUrl = import.meta.env.VITE_API_URL;
@@ -34,11 +35,11 @@ function Location() {
     const { id } = useParams<{ id: string }>();
     const [location, setLocation] = useState<Location | null>(null);
     const [connections, setConnections] = useState<Connection[]>([]);
-    const { addItemToInventory } = useInventory();
+    const { addItemToInventory, canAccessConnection, markLocationVisited } = usePlayer();
     const navigate = useNavigate();
 
     useEffect(() => {
-        fetch(`${apiUrl}/api/Locations/${id}`)
+        fetch(`${apiUrl}/api/Locations/${id}`)  
             .then((response) => response.json())
             .then(setLocation)
             .catch(console.error);
@@ -47,7 +48,11 @@ function Location() {
             .then((response) => response.json())
             .then(setConnections)
             .catch(console.error);
-    }, [id]);
+        if (id) {
+            markLocationVisited(Number(id)); 
+        }
+    }, [id, markLocationVisited]);
+
 
     const handleNavigate = (toId: number) => {
         navigate(`/location/${toId}`);
@@ -87,13 +92,15 @@ function Location() {
                     )}
                     <h2>Spojení</h2>
                     <ul>
-                        {connections.map((connection) => (
-                            <li key={connection.toId}>
-                                <button onClick={() => handleNavigate(connection.toId)}>
-                                    {connection.connectionText}
-                                </button>
-                            </li>
-                        ))}
+                        {connections
+                            .filter((connection) => canAccessConnection(connection.ItemId)) 
+                            .map((connection) => (
+                                <li key={connection.toId}>
+                                    <button onClick={() => handleNavigate(connection.toId)}>
+                                        {connection.connectionText}
+                                    </button>
+                                </li>
+                            ))}
                     </ul>
                 </div>
             ) : (
