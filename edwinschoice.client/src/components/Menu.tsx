@@ -9,11 +9,11 @@ function Menu() {
             className="menu_background"
             style={{ backgroundImage: `url(${apiUrl}/images/Castle_image.webp)` }}
         >
-            <div className="menu-container">
-                <h1>Edwins choice</h1>
+            <div className="menu_container">
+                <h1 className="menu_title">Edwins choice</h1>
             </div>
             <Link to="/location/1">
-                <button>Nová hra</button>
+                <button className="play_button">Nová hra</button>
             </Link>
         </div>
     );

@@ -9,7 +9,7 @@
     flex-direction: column; 
 }
 
-.menu-container {
+.menu_container {
     text-align: center; 
 }
 
@@ -20,7 +20,9 @@ body {
     padding: 0;
 }
 
-h1 {
+
+.menu_title {
+    padding-top:2rem;
     color: red;
     font-family: 'Island Moments', sans-serif;
     font: 'Island Moments';
@@ -30,7 +32,7 @@ h1 {
 
 
 
-button {
+.play_button {
     margin-top: 20px;
     ButtonText: black;
     border-radius: 8px;

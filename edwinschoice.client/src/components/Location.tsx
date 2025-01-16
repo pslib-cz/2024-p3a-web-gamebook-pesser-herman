@@ -34,6 +34,8 @@ function Location() {
     const { id } = useParams<{ id: string }>();
     const [location, setLocation] = useState<Location | null>(null);
     const [connections, setConnections] = useState<Connection[]>([]);
+    const [isInventoryOpen, setIsInventoryOpen] = useState(false);
+
     const {
         inventory,
         playerStats,
@@ -76,16 +78,27 @@ function Location() {
             );
         }
     };
+    const toggleInventory = () => {
+        setIsInventoryOpen((prev) => !prev);
+    };
 
     return (
         <div className="the_location">
             {location ? (
                 <div
-                    className="location-background"
-                    style={{ backgroundImage: `url(${apiUrl}${location.locationImagePath})`, height: '100vh' }}
+                    className="location_background"
+                    style={{
+                        backgroundImage: `url(${apiUrl}${location.locationImagePath})`
+                    }}
                 >
-                    <div className="player-stats">
-                        <h1>Inventory</h1>
+                    <div className="inventory_bag"
+                        onClick={toggleInventory}
+                        style={{ backgroundImage: `url(${apiUrl}/images/bundle_removebg_preview.webp)` }}>
+                    </div>
+                    {/* Player Stats */}
+                    <div className={`inventory_menu ${isInventoryOpen ? "open" : ""}`}>
+                        
+                       <h1>Inventory</h1>
                         <p>Health: {playerStats.health}</p>
                         <p>Attack: {playerStats.attack}</p>
                         <p>Defense: {playerStats.defense}</p>
@@ -114,31 +127,35 @@ function Location() {
                             ))}
                         </ul>
                     </div>
-                    <h1>{location.locationName}</h1>
-                    
 
+                    {/* Location Name */}
+                    <h1>{location.locationName}</h1>
+
+                    {/* Item Pickup Section */}
                     {location.item && (
-                        <div>
+                        
+                        <div className="item-container">
                             <h2>Item</h2>
+                            
                             <img
                                 src={`${apiUrl}${location.item.itemImagePath}`}
                                 alt={location.item.itemName}
-                                style={{ cursor: "pointer", maxWidth: "100px", height: "auto" }}
                                 onClick={handleItemClick}
                             />
                             <p>{location.item.itemName}</p>
                         </div>
                     )}
-                    <h2>Connections</h2>
-                    <ul>
+
+                    {/* Navigation Buttons */}
+                    <div className="connection-buttons">
                         {connections.map((connection) => (
-                            <li key={connection.toId}>
-                                <button onClick={() => handleNavigate(connection.toId)}>
-                                    {connection.connectionText}
-                                </button>
-                            </li>
+                            <button key={connection.toId} onClick={() => handleNavigate(connection.toId)}>
+                                {connection.connectionText}
+                            </button>
                         ))}
-                    </ul>
+                    </div>
+
+                    {/* Text Box (Location Description) */}
                     <div className="text_box" style={{ backgroundImage: `url(${apiUrl}/images/dialog_background.webp)` }}>
                         <p>{location.locationDescription}</p>
                     </div>
@@ -148,6 +165,7 @@ function Location() {
             )}
         </div>
     );
+
 }
 
 export default Location;
