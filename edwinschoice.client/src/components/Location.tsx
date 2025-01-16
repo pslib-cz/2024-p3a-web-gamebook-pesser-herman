@@ -58,6 +58,12 @@ function Location() {
     const handleNavigate = (toId: number) => {
         navigate(`/location/${toId}`);
     };
+    const isItemEquipped = (item: Item): boolean => {
+        return (
+            playerStats.equippedWeapon?.itemsId === item.itemsId ||
+            playerStats.equippedArmor?.itemsId === item.itemsId
+        );
+    };
 
     const handleItemClick = () => {
         if (!location || !location.item) return;
@@ -98,7 +104,11 @@ function Location() {
                                         <button onClick={() => handleUseItem(item)}>Use</button>
                                     )}
                                     {!item.isConsumable && !item.forStory && (
-                                        <button onClick={() => equipItem(item)}>Equip</button>
+                                        isItemEquipped(item) ? (
+                                            <span>Equipped</span>
+                                        ) : (
+                                            <button onClick={() => equipItem(item)}>Equip</button>
+                                        )
                                     )}
                                 </li>
                             ))}
@@ -129,7 +139,7 @@ function Location() {
                             </li>
                         ))}
                     </ul>
-                    <div>
+                    <div className="text_box" style={{ backgroundImage: `url(${apiUrl}/images/dialog_background.webp)` }}>
                         <p>{location.locationDescription}</p>
                     </div>
                 </div>

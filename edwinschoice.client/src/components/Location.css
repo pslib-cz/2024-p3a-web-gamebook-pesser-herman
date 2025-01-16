@@ -9,6 +9,9 @@ h1 {
 
 .location_background {
     height: 100vh;
+    display:flex;
+    flex-direction:column;
+   text-align:center
 }
 
 .the_location {
@@ -16,4 +19,23 @@ h1 {
 }
 .player-stats > p{
     color:red;
+}
+button{
+    padding:0;
+}
+.text_box {
+    position: absolute;
+    width: 80%;
+    height200px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    bottom:20px;
+    border-radius:20px;
+    left:10%;
+}
+.text_box > p {
+    font-size:2rem;
+    color:aliceblue;
+    padding:.2rem 2rem;
 }
