@@ -2,7 +2,7 @@ body {
     height: 100vh;
     padding-bottom: 0;
     margin: 0;
-    overflow: hidden; /* Prevents unnecessary scrolling */
+    overflow: hidden; 
 }
 
 .location_background {
@@ -12,16 +12,21 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    position: relative; /* Enables absolute positioning inside */
+    position: relative; 
     text-align: center;
     background-size: cover;
     background-position: center;
 }
 
+.location_title {
+    position: fixed;
+    top: 20px;
+}
+
 .the_location {
     height: 100vh;
     width: 100vw;
-    position: relative; /* Keeps everything inside relative */
+    position: relative; 
 }
 
 .player-stats {
@@ -46,9 +51,10 @@ body {
 }
 
 .inventory_menu {
+    z-index: 1;
     position: fixed;
     top: 0;
-    left: -350px; /* Starts hidden */
+    left: -350px;
     width: 300px;
     height: 100vh;
     background: rgba(0, 0, 0, 0.8);
@@ -65,7 +71,7 @@ body {
     }
 
     .inventory_menu.open {
-        transform: translateX(349px); /* Slides in */
+        transform: translateX(349px); 
     }
 
     .player-stats > p {
@@ -81,44 +87,60 @@ body {
     background-repeat: no-repeat;
     bottom: 20px;
     border-radius: 20px;
-   
     display: flex;
-    align-items: center;
-    justify-content: center;
+   
+    justify-content: start;
     padding: 20px;
+    overflow: hidden; 
 }
 
     .text_box > p {
         font-size: 2rem;
         color: aliceblue;
+        margin: 0;
+        text-align: center;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        width: fit-content;
     }
+
 
 .item-container {
     position: absolute;
     top: 50%;
-    left: 30%;
+    left: 50%;
     transform: translate(-50%, -50%);
     text-align: center;
 }
 
     .item-container img {
         cursor: pointer;
-        max-width: 100px;
+        max-width: 150px;
         height: auto;
     }
 
-.connection-buttons {
+.connections {
+    font-weight:700;
+    font-size:30px;
     position: relative;
     bottom: 10%;
-   
+    color: white;
     display: flex;
     flex-direction: column;
     gap: 10px;
-    top: -300px;
-    
+    top: -220px;
+    cursor: pointer;
+    text-shadow:
+        -1px -1px 2px black, 
+        1px -1px 2px black,
+        -1px 1px 2px black, 
+        1px 1px 2px black;
 }
-
-    .connection-buttons button {
+    
+.connections div:hover{
+    color:red;
+}
+    .connections button {
         padding: 10px 15px;
         font-size: 1.2rem;
         cursor: pointer;
@@ -126,3 +148,16 @@ body {
         border: 2px solid black;
         border-radius: 5px;
     }
+.the_choice {
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.8); 
+    opacity: 0; 
+    pointer-events: none;
+    z-index: 1; 
+    transition: opacity 0.3s ease; 
+}
+

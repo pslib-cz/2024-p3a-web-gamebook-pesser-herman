@@ -109,7 +109,7 @@ function Location() {
                                     <img
                                         src={`${apiUrl}${item.itemImagePath}`}
                                         alt={item.itemName}
-                                        style={{ width: "50px", height: "50px" }}
+                                        style={{ width: "40px", height: "auto" }}
                                     />
                                     {item.itemName} (x{count})
                                     {item.itemDescription}
@@ -127,35 +127,27 @@ function Location() {
                             ))}
                         </ul>
                     </div>
-
-                    {/* Location Name */}
-                    <h1>{location.locationName}</h1>
-
-                    {/* Item Pickup Section */}
+                    <h1 className="location_title">{location.locationName}</h1>
                     {location.item && (
                         
                         <div className="item-container">
-                            <h2>Item</h2>
-                            
                             <img
                                 src={`${apiUrl}${location.item.itemImagePath}`}
                                 alt={location.item.itemName}
                                 onClick={handleItemClick}
                             />
-                            <p>{location.item.itemName}</p>
                         </div>
                     )}
+                                              
 
-                    {/* Navigation Buttons */}
-                    <div className="connection-buttons">
+                    <div className="connections ">
                         {connections.map((connection) => (
-                            <button key={connection.toId} onClick={() => handleNavigate(connection.toId)}>
-                                {connection.connectionText}
-                            </button>
+                            <div key={connection.toId} onClick={() => handleNavigate(connection.toId)}>
+                                
+                                {"> " + connection.connectionText}
+                            </div>
                         ))}
-                    </div>
-
-                    {/* Text Box (Location Description) */}
+                        </div>    
                     <div className="text_box" style={{ backgroundImage: `url(${apiUrl}/images/dialog_background.webp)` }}>
                         <p>{location.locationDescription}</p>
                     </div>
