@@ -28,9 +28,11 @@ interface PlayerStats {
 interface InventoryContextType {
     inventory: { [key: number]: InventoryItem };
     playerStats: PlayerStats;
+    obtainedItems: number[];
     addItemToInventory: (item: Item) => void;
     handleUseItem: (item: Item) => void;
     equipItem: (item: Item) => void;
+    markItemAsObtained: (itemId: number) => void;
 }
 
 const InventoryContext = createContext<InventoryContextType | undefined>(undefined);
@@ -52,6 +54,12 @@ const PlayerComponent: React.FC<{ children: ReactNode }> = ({ children }) => {
         equippedWeapon: null,
         equippedArmor: null,
     });
+
+    const [obtainedItems, setObtainedItems] = useState<number[]>([]);
+
+    const markItemAsObtained = (itemId: number) => {
+        setObtainedItems((prev) => [...new Set([...prev, itemId])]);
+    };
 
     const addItemToInventory = (item: Item) => {
         setInventory((prevInventory) => {
@@ -116,7 +124,9 @@ const PlayerComponent: React.FC<{ children: ReactNode }> = ({ children }) => {
 
     return (
         <InventoryContext.Provider
-            value={{ inventory, playerStats, addItemToInventory, handleUseItem, equipItem }}
+            value={{
+                inventory, playerStats, addItemToInventory, handleUseItem, equipItem, obtainedItems, markItemAsObtained
+            }}
         >
             {children}
         </InventoryContext.Provider>

@@ -36,26 +36,36 @@ function Location() {
     const [connections, setConnections] = useState<Connection[]>([]);
     const [isInventoryOpen, setIsInventoryOpen] = useState(false);
 
+
     const {
         inventory,
         playerStats,
         addItemToInventory,
         handleUseItem,
         equipItem,
+        obtainedItems,
+        markItemAsObtained
     } = useInventory();
+
     const navigate = useNavigate();
 
     useEffect(() => {
         fetch(`${apiUrl}/api/Locations/${id}`)
             .then((response) => response.json())
-            .then(setLocation)
+            .then((data) => {
+                if (data.item && !data.itemReobtainable && obtainedItems.includes(data.item.itemsId)) {
+                    data.item = null;
+                    data.itemId = null;
+                }
+                setLocation(data);
+            })
             .catch(console.error);
 
         fetch(`${apiUrl}/api/Locations/${id}/connections`)
             .then((response) => response.json())
             .then(setConnections)
             .catch(console.error);
-    }, [id]);
+    }, [id, obtainedItems]);
 
     const handleNavigate = (toId: number) => {
         navigate(`/location/${toId}`);
@@ -71,6 +81,7 @@ function Location() {
         if (!location || !location.item) return;
 
         addItemToInventory(location.item);
+        markItemAsObtained(location.item.itemsId);
 
         if (!location.itemReobtainable) {
             setLocation((prev) =>
@@ -93,16 +104,14 @@ function Location() {
                 >
                     <div className="inventory_bag"
                         onClick={toggleInventory}
-                        style={{ backgroundImage: `url(${apiUrl}/images/bundle_removebg_preview.webp)` }}>
+                        style={{ backgroundImage: `url(${apiUrl}/items/inventory.png)` }}>
                     </div>
-                    {/* Player Stats */}
                     <div className={`inventory_menu ${isInventoryOpen ? "open" : ""}`}>
                         
                        <h1>Inventory</h1>
                         <p>Health: {playerStats.health}</p>
                         <p>Attack: {playerStats.attack}</p>
                         <p>Defense: {playerStats.defense}</p>
-
                         <ul>
                             {Object.values(inventory).map(({ item, count }) => (
                                 <li key={item.itemsId}>
@@ -137,9 +146,7 @@ function Location() {
                                 onClick={handleItemClick}
                             />
                         </div>
-                    )}
-                                              
-
+                    )}                   
                     <div className="connections ">
                         {connections.map((connection) => (
                             <div key={connection.toId} onClick={() => handleNavigate(connection.toId)}>
