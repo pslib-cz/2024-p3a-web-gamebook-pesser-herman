@@ -11,7 +11,7 @@ namespace Edwinschoice.Server.Models
         public required int Health { get; set; }
         public required int Defense { get; set; }
         public required int Attack { get; set; }
-        public required byte[] BackroundImage { get; set; }
+        public required string BattleImagePath { get; set; }
 
     }
 }

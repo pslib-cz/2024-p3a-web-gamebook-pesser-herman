@@ -2,6 +2,7 @@
 using Edwinschoice.Server.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -9,9 +10,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Edwinschoice.Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250118193050_Battle_controller")]
+    partial class Battle_controller
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.0");
@@ -50,33 +53,33 @@ namespace Edwinschoice.Server.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<int?>("BattlesId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("ConnectionText")
                         .HasColumnType("TEXT");
 
-                    b.Property<int?>("FromBattleId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int?>("FromId")
+                    b.Property<int>("FromId")
                         .HasColumnType("INTEGER");
 
                     b.Property<int?>("ItemId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("ToBattleId")
+                    b.Property<int?>("LocationsId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("ToId")
+                    b.Property<int>("ToId")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("ConnectionsId");
 
-                    b.HasIndex("FromBattleId");
+                    b.HasIndex("BattlesId");
 
                     b.HasIndex("FromId");
 
                     b.HasIndex("ItemId");
 
-                    b.HasIndex("ToBattleId");
+                    b.HasIndex("LocationsId");
 
                     b.HasIndex("ToId");
 
@@ -182,35 +185,39 @@ namespace Edwinschoice.Server.Migrations
 
             modelBuilder.Entity("Edwinschoice.Server.Models.Connections", b =>
                 {
-                    b.HasOne("Edwinschoice.Server.Models.Battles", "FromBattle")
+                    b.HasOne("Edwinschoice.Server.Models.Battles", "Battle")
                         .WithMany()
-                        .HasForeignKey("FromBattleId");
+                        .HasForeignKey("BattlesId");
 
                     b.HasOne("Edwinschoice.Server.Models.Locations", "From")
                         .WithMany()
-                        .HasForeignKey("FromId");
+                        .HasForeignKey("FromId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Edwinschoice.Server.Models.Items", "Item")
                         .WithMany()
                         .HasForeignKey("ItemId");
 
-                    b.HasOne("Edwinschoice.Server.Models.Battles", "ToBattle")
+                    b.HasOne("Edwinschoice.Server.Models.Locations", "Locations")
                         .WithMany()
-                        .HasForeignKey("ToBattleId");
+                        .HasForeignKey("LocationsId");
 
                     b.HasOne("Edwinschoice.Server.Models.Locations", "To")
                         .WithMany()
-                        .HasForeignKey("ToId");
+                        .HasForeignKey("ToId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Battle");
 
                     b.Navigation("From");
 
-                    b.Navigation("FromBattle");
-
                     b.Navigation("Item");
 
-                    b.Navigation("To");
+                    b.Navigation("Locations");
 
-                    b.Navigation("ToBattle");
+                    b.Navigation("To");
                 });
 
             modelBuilder.Entity("Edwinschoice.Server.Models.Endings", b =>
