@@ -15,6 +15,9 @@ function Menu() {
             <Link to="/location/1">
                 <button className="play_button">Nová hra</button>
             </Link>
+            <Link to="/endings">
+                <button className="endings_button">View Endings</button>
+            </Link>
         </div>
     );
 }
