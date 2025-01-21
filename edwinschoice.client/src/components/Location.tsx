@@ -26,6 +26,7 @@ interface Connection {
     locationName: string;
     locationDescription: string;
     connectionText: string;
+    isBattle: boolean;
 }
 
 const apiUrl = import.meta.env.VITE_API_URL;
@@ -67,8 +68,12 @@ function Location() {
             .catch(console.error);
     }, [id, obtainedItems]);
 
-    const handleNavigate = (toId: number) => {
-        navigate(`/location/${toId}`);
+    const handleNavigate = (toId: number | null, isBattle: boolean) => {
+        if (isBattle) {
+            navigate(`/battle/${toId}`);  
+        } else {
+            navigate(`/location/${toId}`);  
+        }
     };
     const isItemEquipped = (item: Item): boolean => {
         return (
@@ -149,7 +154,7 @@ function Location() {
                     )}                   
                     <div className="connections ">
                         {connections.map((connection) => (
-                            <div key={connection.toId} onClick={() => handleNavigate(connection.toId)}>
+                            <div key={connection.toId} onClick={() => handleNavigate(connection.toId, connection.isBattle)}>
                                 
                                 {"> " + connection.connectionText}
                             </div>

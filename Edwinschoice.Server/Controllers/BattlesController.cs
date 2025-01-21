@@ -21,6 +21,7 @@ namespace Edwinschoice.Server.Controllers
         public BattlesController(ApplicationDbContext context)
         {
             _context = context;
+
             if (!Directory.Exists(_imageDirectory))
             {
                 Directory.CreateDirectory(_imageDirectory);
@@ -58,14 +59,25 @@ namespace Edwinschoice.Server.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Battles>> GetBattles(int id)
         {
-            var battles = await _context.Battles.FindAsync(id);
-
-            if (battles == null)
+            try
             {
-                return NotFound();
-            }
+                Console.WriteLine($"Fetching battle ID: {id}");
 
-            return battles;
+                var battle = await _context.Battles.FindAsync(id);
+
+                if (battle == null)
+                {
+                    Console.WriteLine($"Battle with ID {id} not found");
+                    return NotFound($"Battle with ID {id} not found");
+                }
+
+                return Ok(battle);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error fetching battle {id}: {ex}");
+                return StatusCode(500, $"Internal Server Error: {ex.Message}");
+            }
         }
 
         [HttpGet("{id}/image")]

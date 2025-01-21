@@ -29,7 +29,7 @@ interface InventoryContextType {
     inventory: { [key: number]: InventoryItem };
     playerStats: PlayerStats;
     obtainedItems: number[];
-    setPlayerStats: React.Dispatch<React.SetStateAction<PlayerStats>>; //Maybe gone
+    setPlayerStats: React.Dispatch<React.SetStateAction<PlayerStats>>;
     addItemToInventory: (item: Item) => void;
     handleUseItem: (item: Item) => void;
     equipItem: (item: Item) => void;
@@ -127,7 +127,7 @@ const PlayerComponent: React.FC<{ children: ReactNode }> = ({ children }) => {
     return (
         <InventoryContext.Provider
             value={{
-                inventory, playerStats, addItemToInventory, handleUseItem, equipItem, obtainedItems, markItemAsObtained, setPlayerStats  // Maybe gone
+                inventory, playerStats, addItemToInventory, handleUseItem, equipItem, obtainedItems, markItemAsObtained, setPlayerStats 
             }}
         >
             {children}

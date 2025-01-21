@@ -36,11 +36,12 @@ namespace Edwinschoice.Server.Controllers
                 .Include(c => c.To)
                 .Select(c => new
                 {
-                    c.ToId,
-                    c.To.LocationName,
-                    c.To.LocationDescription,
+                    ToId = c.ToId ?? c.ToBattleId, 
+                    LocationName = c.ToId != null ? c.To.LocationName : c.ToBattle.EnemyName, 
+                    LocationDescription = c.ToId != null ? c.To.LocationDescription : "Battle encounter!",
                     c.ConnectionText,
-                    c.ItemId
+                    c.ItemId,
+                    IsBattle = c.ToId == null 
                 })
                 .ToList();
 
@@ -58,9 +59,8 @@ namespace Edwinschoice.Server.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Locations>> GetLocations(int id)
         {
-            // Zahrnutí 'Item' při načítání detailů o lokaci
             var location = await _context.Locations
-                .Include(l => l.Item) // Načtení související položky
+                .Include(l => l.Item) 
                 .FirstOrDefaultAsync(l => l.LocationsId == id);
 
             if (location == null)

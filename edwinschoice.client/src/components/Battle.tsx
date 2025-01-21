@@ -35,15 +35,25 @@ const Battle: React.FC = () => {
     useEffect(() => {
         const fetchBattle = async () => {
             try {
+                console.log(`Fetching battle ID: ${id}`);
                 const response = await fetch(`/api/Battles/${id}`);
-                if (!response.ok) throw new Error("Battle not found");
+
+                if (!response.ok) {
+                    const errorMessage = await response.text();
+                    throw new Error(`Battle not found: ${errorMessage}`);
+                }
 
                 const data: Battle = await response.json();
+                console.log("Battle data received:", data);
                 setBattle(data);
                 setEnemyHealth(data.Health);
-            } catch (error) {
-                console.error("Error fetching battle:", error);
-                navigate("/location/0"); 
+            } catch (error: unknown) {
+                if (error instanceof Error) {
+                    console.error("Error fetching battle:", error.message);
+                } else {
+                    console.error("Unknown error fetching battle:", error);
+                }
+                setTimeout(() => navigate("/location/0"), 2000);
             } finally {
                 setLoading(false);
             }
@@ -105,8 +115,8 @@ const Battle: React.FC = () => {
                 <button onClick={handleAttack}>Attack</button>
                 {Object.values(inventory)
                     .filter((invItem) => invItem.item.isConsumable)
-                    .map((invItem) => (
-                        <button key={invItem.item.itemsId} onClick={() => handleHeal(invItem.item)}>
+                    .map((invItem, index) => (
+                        <button key={`${invItem.item.itemsId}-${index}`} onClick={() => handleHeal(invItem.item)}>
                             Heal ({invItem.item.itemName})
                         </button>
                     ))}
