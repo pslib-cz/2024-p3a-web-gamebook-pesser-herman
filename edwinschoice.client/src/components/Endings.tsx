@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
-const apiUrl = import.meta.env.VITE_API_URL; // API base URL
+const apiUrl = import.meta.env.VITE_API_URL;
 
 interface Ending {
     endingsId: number;
@@ -15,13 +15,21 @@ const Ending: React.FC = () => {
     const [endings, setEndings] = useState<Ending[]>([]);
     const [reachedLocations, setReachedLocations] = useState<number[]>([]);
     const navigate = useNavigate();
+    const location = useLocation();
 
     useEffect(() => {
         fetchEndings();
         checkReachedLocations();
     }, []);
 
-    // Fetch all endings from the API
+
+    useEffect(() => {
+        const savedLocations = localStorage.getItem("reachedLocations");
+        const parsedLocations = savedLocations ? JSON.parse(savedLocations) : [];
+        console.log("Loaded reachedLocations:", parsedLocations);
+        setReachedLocations(parsedLocations);
+    }, [location]);
+
     const fetchEndings = async () => {
         try {
             const response = await fetch(`${apiUrl}/api/Endings`);
@@ -34,7 +42,6 @@ const Ending: React.FC = () => {
         }
     };
 
-    // Check local storage for reached locations
     const checkReachedLocations = () => {
         const savedLocations = localStorage.getItem("reachedLocations");
         if (savedLocations) {
@@ -44,24 +51,29 @@ const Ending: React.FC = () => {
 
     return (
         <div className="ending-container">
-            <h1>Endings</h1>
+            <h1>Konce</h1>
             <div className="endings-grid">
                 {endings.map((ending) => {
                     const isUnlocked = reachedLocations.includes(ending.locationsId);
                     return (
                         <div key={ending.endingsId} className="ending-card">
                             <img
-                                src={`${apiUrl}/endings/${isUnlocked ? ending.endingImagePath : "lock.png"}`}
+                                src={`${apiUrl}${isUnlocked
+                                    ? (ending.endingImagePath.startsWith("/")
+                                        ? ending.endingImagePath
+                                        : "/endings/" + ending.endingImagePath)
+                                    : "/endings/lock.png"
+                                    }`}
                                 alt={ending.endingName}
                                 className="ending-image"
                             />
                             <h2>{ending.endingName}</h2>
-                            <p>{isUnlocked ? ending.endingDescription : "Locked Ending"}</p>
+                            <p>{ending.endingDescription}</p>
                         </div>
                     );
                 })}
             </div>
-            <button onClick={() => navigate("/")}>Back to Menu</button>
+            <button onClick={() => navigate("/")}>Zpìt do menu.</button>
         </div>
     );
 };

@@ -16,7 +16,7 @@ function Menu() {
                 <button className="play_button">Nová hra</button>
             </Link>
             <Link to="/endings">
-                <button className="endings_button">View Endings</button>
+                <button className="endings_button">Konce</button>
             </Link>
         </div>
     );

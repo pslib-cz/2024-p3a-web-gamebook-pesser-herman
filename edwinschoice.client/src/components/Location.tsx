@@ -59,6 +59,20 @@ function Location() {
                     data.itemId = null;
                 }
                 setLocation(data);
+
+                if (id) {
+                    const storedLocations = localStorage.getItem("reachedLocations");
+                    const reachedLocations = storedLocations ? JSON.parse(storedLocations) : [];
+
+                    if (!reachedLocations.includes(Number(id))) {
+                        reachedLocations.push(Number(id));
+                        localStorage.setItem("reachedLocations", JSON.stringify(reachedLocations));
+
+                        console.log("Updated reachedLocations:", reachedLocations); 
+                    } else {
+                        console.log("Location already recorded:", reachedLocations);
+                    }
+                }
             })
             .catch(console.error);
 
@@ -140,6 +154,7 @@ function Location() {
                                 </li>
                             ))}
                         </ul>
+                        <button onClick={() => navigate("/")}>Zpìt do menu.</button>
                     </div>
                     <h1 className="location_title">{location.locationName}</h1>
                     {location.item && (
