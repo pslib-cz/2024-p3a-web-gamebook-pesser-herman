@@ -154,7 +154,7 @@ function Location() {
                                 </li>
                             ))}
                         </ul>
-                        <button onClick={() => navigate("/")}>Zpìt do menu.</button>
+                        <button className="back_to_menu_button" onClick={() => navigate("/")}>Zpìt do menu.</button>
                     </div>
                     <h1 className="location_title">{location.locationName}</h1>
                     {location.item && (

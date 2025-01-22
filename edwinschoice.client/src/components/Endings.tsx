@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-
+import './Endings.css';
 const apiUrl = import.meta.env.VITE_API_URL;
 
 interface Ending {
@@ -73,7 +73,7 @@ const Ending: React.FC = () => {
                     );
                 })}
             </div>
-            <button onClick={() => navigate("/")}>Zpìt do menu.</button>
+            <button className="back_to_menu_button" onClick={() => navigate("/")}>Zpìt do menu.</button>
         </div>
     );
 };
