@@ -1,4 +1,6 @@
-﻿namespace Edwinschoice.Server.Models
+﻿using System.Text.Json.Serialization;
+
+namespace Edwinschoice.Server.Models
 {
     public class Endings
     {
@@ -7,6 +9,7 @@
         public required string EndingDescription { get; set; }
         public required string EndingImagePath { get; set; }
         public int LocationsId { get; set; }
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public Locations? Locations { get; set; }
 
     }

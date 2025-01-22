@@ -16,7 +16,7 @@ namespace Edwinschoice.Server.Controllers
     public class BattlesController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
-        private readonly string _imageDirectory = Path.Combine("wwwroot", "battless");
+        private readonly string _imageDirectory = Path.Combine("wwwroot", "battles");
 
         public BattlesController(ApplicationDbContext context)
         {
