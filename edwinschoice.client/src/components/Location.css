@@ -63,20 +63,20 @@ body {
     transition: transform 0.3s ease-in-out;
 }
 
-    .inventory_menu.open h1 {
-        margin-left:2em;
-    }
-    .inventory_menu h1{
-        margin-left: 2em;
-    }
+.inventory_menu.open h1 {
+    margin-left:2em;
+}
+.inventory_menu h1{
+    margin-left: 2em;
+}
 
-    .inventory_menu.open {
-        transform: translateX(349px); 
-    }
+.inventory_menu.open {
+    transform: translateX(349px); 
+}
 
-    .player-stats > p {
-        color: red;
-    }
+.player-stats > p {
+    color: red;
+}
 
 .text_box {
     position: absolute;
@@ -88,21 +88,20 @@ body {
     bottom: 20px;
     border-radius: 20px;
     display: flex;
-   
     justify-content: start;
     padding: 20px;
     overflow: hidden; 
 }
 
-    .text_box > p {
-        font-size: 2rem;
-        color: aliceblue;
-        margin: 0;
-        text-align: center;
-        word-wrap: break-word;
-        overflow-wrap: break-word;
-        width: fit-content;
-    }
+.text_box > p {
+    font-size: 2rem;
+    color: aliceblue;
+    margin: 0;
+    text-align: center;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    width: fit-content;
+}
 
 
 .item-container {
@@ -113,11 +112,11 @@ body {
     text-align: center;
 }
 
-    .item-container img {
-        cursor: pointer;
-        max-width: 150px;
-        height: auto;
-    }
+.item-container img {
+    cursor: pointer;
+    max-width: 150px;
+    height: auto;
+}
 
 .connections {
     font-weight:700;

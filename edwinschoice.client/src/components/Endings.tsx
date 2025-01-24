@@ -50,7 +50,9 @@ const Ending: React.FC = () => {
     };
 
     return (
-        <div className="ending-container">
+        <div className="ending-container" style={
+            { backgroundImage: `url(${apiUrl}/images/endings_background.webp)`}
+        }>
             <h1>Konce</h1>
             <div className="endings-grid">
                 {endings.map((ending) => {
@@ -67,8 +69,10 @@ const Ending: React.FC = () => {
                                 alt={ending.endingName}
                                 className="ending-image"
                             />
-                            <h2>{ending.endingName}</h2>
-                            <p>{ending.endingDescription}</p>
+                            <div className="ending-card-text">
+                                <h2>{ending.endingName}</h2>
+                                <p>{ending.endingDescription}</p>
+                            </div>
                         </div>
                     );
                 })}

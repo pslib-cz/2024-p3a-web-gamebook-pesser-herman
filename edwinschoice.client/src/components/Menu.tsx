@@ -13,10 +13,10 @@ function Menu() {
                 <h1 className="menu_title">Edwins choice</h1>
             </div>
             <Link to="/location/1">
-                <button className="play_button">Nová hra</button>
+                <button className="button">Nová hra</button>
             </Link>
             <Link to="/endings">
-                <button className="endings_button">Konce</button>
+                <button className="button">Konce</button>
             </Link>
         </div>
     );
