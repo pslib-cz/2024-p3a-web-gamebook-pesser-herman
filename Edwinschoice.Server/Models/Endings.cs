@@ -9,7 +9,6 @@ namespace Edwinschoice.Server.Models
         public required string EndingDescription { get; set; }
         public required string EndingImagePath { get; set; }
         public int LocationsId { get; set; }
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public Locations? Locations { get; set; }
 
     }

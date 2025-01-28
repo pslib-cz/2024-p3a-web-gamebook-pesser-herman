@@ -1,0 +1,19 @@
+body {
+    height: 100vh;
+    padding-bottom: 0;
+    margin: 0;
+    overflow: hidden;
+}
+
+.battle_background {
+    height: 70vh;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    text-align: center;
+    background-size: cover;
+    background-position: center;
+}

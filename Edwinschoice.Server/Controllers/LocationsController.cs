@@ -52,43 +52,68 @@ namespace Edwinschoice.Server.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Locations>>> GetLocations()
         {
-            return await _context.Locations.ToListAsync();
+            var locations = await _context.Locations.Include(l => l.Item).ToListAsync();
+            return Ok(locations.Select(l => new LocationDto(l)));
         }
 
         // GET: api/Locations/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Locations>> GetLocations(int id)
+        public async Task<ActionResult<LocationDto>> GetLocations(int id)
         {
-            var location = await _context.Locations
-                .Include(l => l.Item) 
-                .FirstOrDefaultAsync(l => l.LocationsId == id);
-
+            var location = await _context.Locations.Include(l => l.Item).FirstOrDefaultAsync(l => l.LocationsId == id);
             if (location == null)
             {
                 return NotFound();
             }
+            return Ok(new LocationDto(location));
+        }
 
-            return Ok(new
+        public class LocationDto
+        {
+            public int LocationsId { get; set; }
+            public string LocationName { get; set; } = "Unknown Location";
+            public string LocationDescription { get; set; } = "No description available.";
+            public string LocationImagePath { get; set; } = "/images/default.webp";
+            public bool ItemReobtainable { get; set; } = false;
+            public int? ItemId { get; set; } = null;
+            public ItemDto Item { get; set; } = null;
+
+            public LocationDto(Locations location)
             {
-                location.LocationsId,
-                location.LocationName,
-                location.LocationDescription,
-                location.LocationImagePath,
-                location.ItemReobtainable,
-                location.ItemId,
-                Item = location.Item != null ? new
-                {
-                    location.Item.ItemsId,
-                    location.Item.ItemName,
-                    location.Item.ItemImagePath,
-                    location.Item.isConsumable,
-                    location.Item.forStory,
-                    location.Item.ItemDescription,
-                    location.Item.Health,
-                    location.Item.Attack,
-                    location.Item.Defense
-                } : null
-            });
+                LocationsId = location.LocationsId;
+                LocationName = location.LocationName ?? "Unknown Location";
+                LocationDescription = location.LocationDescription ?? "No description available.";
+                LocationImagePath = !string.IsNullOrEmpty(location.LocationImagePath) ? location.LocationImagePath : "/images/default.webp";
+                ItemReobtainable = location.ItemReobtainable ?? false;
+                ItemId = location.ItemId;
+                Item = location.Item != null ? new ItemDto(location.Item) : null;
+            }
+        }
+
+        public class ItemDto
+        {
+            public int ItemsId { get; set; }
+            public string ItemName { get; set; } = "Unknown Item";
+            public string ItemImagePath { get; set; } = "/images/default-item.webp";
+            public bool isConsumable { get; set; } = false;
+            public bool forStory { get; set; } = false;
+            public string ItemDescription { get; set; } = "No description available.";
+            public int? Health { get; set; } = 0;
+            public int? Attack { get; set; } = 0;
+            public int? Defense { get; set; } = 0;
+
+            public ItemDto(Items item)
+            {
+                ItemsId = item.ItemsId;
+                ItemName = item.ItemName ?? "Unknown Item";
+                ItemImagePath = !string.IsNullOrEmpty(item.ItemImagePath) ? item.ItemImagePath : "/images/default-item.webp";
+                isConsumable = item.isConsumable;
+                forStory = item.forStory;
+                ItemDescription = item.ItemDescription ?? "No description available.";
+                Health = item.Health;
+                Attack = item.Attack;
+                Defense = item.Defense;
+            }
         }
 
         [HttpGet("{id}/image")]

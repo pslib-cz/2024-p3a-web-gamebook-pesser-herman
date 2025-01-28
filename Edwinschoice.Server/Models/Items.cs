@@ -8,11 +8,8 @@ namespace Edwinschoice.Server.Models
         public int ItemsId { get; set; }
         public required string ItemName { get; set; }
         public required string ItemDescription { get; set; }
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public int? Health { get; set; }
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public int? Attack { get; set; }
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public int? Defense { get; set; }
         public bool isConsumable { get; set; }
         public bool forStory { get; set; }

@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Edwinschoice.Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250118193323_Connection_Update")]
-    partial class Connection_Update
+    [Migration("20250128185940_EnemyFix")]
+    partial class EnemyFix
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,22 +25,22 @@ namespace Edwinschoice.Server.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("Attack")
-                        .HasColumnType("INTEGER");
-
                     b.Property<string>("BattleImagePath")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("Defense")
+                    b.Property<int>("EnemyAttack")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("EnemyDefense")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("EnemyHealth")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("EnemyName")
                         .IsRequired()
                         .HasColumnType("TEXT");
-
-                    b.Property<int>("Health")
-                        .HasColumnType("INTEGER");
 
                     b.HasKey("BattlesId");
 
@@ -54,6 +54,7 @@ namespace Edwinschoice.Server.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("ConnectionText")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<int?>("FromBattleId")

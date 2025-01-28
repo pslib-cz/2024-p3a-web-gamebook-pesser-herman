@@ -50,7 +50,7 @@ export const useInventory = (): InventoryContextType => {
 const PlayerComponent: React.FC<{ children: ReactNode }> = ({ children }) => {
     const [inventory, setInventory] = useState<{ [key: number]: InventoryItem }>({});
     const [playerStats, setPlayerStats] = useState<PlayerStats>({
-        health: 80,
+        health: 100,
         attack: 10,
         defense: 5,
         equippedWeapon: null,

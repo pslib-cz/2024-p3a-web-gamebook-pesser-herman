@@ -33,14 +33,13 @@ namespace Edwinschoice.Server.Controllers
         {
             var connections = _context.Connections
                 .Where(c => c.FromBattleId == id)
-                .Include(c => c.ToBattle)
+                .Include(c => c.To)
                 .Select(c => new
                 {
-                    c.ToBattleId,
-                    c.ToBattle.EnemyName,
-                    c.ToBattle.Health,
-                    c.ToBattle.Defense,
-                    c.ToBattle.Attack,
+                    c.ToId,
+                    c.To.LocationName,
+                    c.To.LocationDescription,
+                    c.To.ItemId,
                     c.ConnectionText
                 })
                 .ToList();

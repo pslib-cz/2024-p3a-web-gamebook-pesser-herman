@@ -22,22 +22,22 @@ namespace Edwinschoice.Server.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("Attack")
-                        .HasColumnType("INTEGER");
-
                     b.Property<string>("BattleImagePath")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("Defense")
+                    b.Property<int>("EnemyAttack")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("EnemyDefense")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("EnemyHealth")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("EnemyName")
                         .IsRequired()
                         .HasColumnType("TEXT");
-
-                    b.Property<int>("Health")
-                        .HasColumnType("INTEGER");
 
                     b.HasKey("BattlesId");
 
@@ -51,6 +51,7 @@ namespace Edwinschoice.Server.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("ConnectionText")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<int?>("FromBattleId")
