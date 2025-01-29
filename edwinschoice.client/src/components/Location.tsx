@@ -127,10 +127,10 @@ function Location() {
                     </div>
                     <div className={`inventory_menu ${isInventoryOpen ? "open" : ""}`}>
                         
-                       <h1>Inventory</h1>
-                        <p>Health: {playerStats.health}</p>
-                        <p>Attack: {playerStats.attack}</p>
-                        <p>Defense: {playerStats.defense}</p>
+                        <h1>Inventáø</h1>
+                        <p>Životy: {playerStats.health}</p>
+                        <p>Útok: {playerStats.attack}</p>
+                        <p>Obrana: {playerStats.defense}</p>
                         <ul>
                             {Object.values(inventory).map(({ item, count }) => (
                                 <li key={item.itemsId}>
@@ -142,13 +142,13 @@ function Location() {
                                     {item.itemName} (x{count})
                                     {item.itemDescription}
                                     {item.isConsumable && !item.forStory && (
-                                        <button onClick={() => handleUseItem(item)}>Use</button>
+                                        <button onClick={() => handleUseItem(item)}>Použít</button>
                                     )}
                                     {!item.isConsumable && !item.forStory && (
                                         isItemEquipped(item) ? (
-                                            <span>Equipped</span>
+                                            <span>Nasazeno</span>
                                         ) : (
-                                            <button onClick={() => equipItem(item)}>Equip</button>
+                                                <button onClick={() => equipItem(item)}>Nasadit</button>
                                         )
                                     )}
                                 </li>

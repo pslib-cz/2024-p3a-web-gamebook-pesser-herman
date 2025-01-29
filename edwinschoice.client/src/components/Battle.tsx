@@ -32,12 +32,13 @@ interface Item {
 const Battle: React.FC = () => {
     const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
-    const { playerStats, setPlayerStats, inventory, handleUseItem } = useInventory();
+    const { playerStats, setPlayerStats, inventory, handleUseItem, equipItem } = useInventory();
 
     const [battle, setBattle] = useState<Battle | null>(null);
     const [enemyHealth, setEnemyHealth] = useState<number | null>(null);
     const [connections, setConnections] = useState<Connection[]>([]);
     const [loading, setLoading] = useState(true);
+    const [isInventoryOpen, setIsInventoryOpen] = useState(false);
 
     useEffect(() => {
         const fetchBattle = async () => {
@@ -83,6 +84,17 @@ const Battle: React.FC = () => {
         fetchConnections();
     }, [id, navigate]);
 
+    const toggleInventory = () => {
+        setIsInventoryOpen((prev) => !prev);
+    };
+
+    const isItemEquipped = (item: Item) => {
+        return (
+            playerStats.equippedWeapon?.itemsId === item.itemsId ||
+            playerStats.equippedArmor?.itemsId === item.itemsId
+        );
+    };
+
     const getExitLocation = (): number | null => {
         const exitConnection = connections.find((conn) => conn.toId !== null);
         return exitConnection ? exitConnection.toId : null;
@@ -111,22 +123,6 @@ const Battle: React.FC = () => {
         }
     };
 
-    const handleHeal = (healingItem: Item) => {
-        if (!healingItem.isConsumable || !healingItem.health) return;
-        handleUseItem(healingItem);
-        if (battle) {
-            const enemyDamage = Math.max(battle.enemyAttack - playerStats.defense, 0);
-            const newPlayerHealth = playerStats.health - enemyDamage;
-
-            if (newPlayerHealth <= 0) {
-                setPlayerStats((prevStats) => ({ ...prevStats, health: 0 }));
-                navigate("/location/0");
-            } else {
-                setPlayerStats((prevStats) => ({ ...prevStats, health: newPlayerHealth }));
-            }
-        }
-    };
-
     if (loading) return <p>Loading battle...</p>;
     if (!battle) return <p>Battle not found</p>;
 
@@ -142,13 +138,56 @@ const Battle: React.FC = () => {
             <p>Enemy Health: {enemyHealth}</p>
             <div>
                 <button onClick={handleAttack}>Attack</button>
-                {Object.values(inventory)
-                    .filter((invItem) => invItem.item.isConsumable)
-                    .map((invItem, index) => (
-                        <button key={`${invItem.item.itemsId}-${index}`} onClick={() => handleHeal(invItem.item)}>
-                            Heal ({invItem.item.itemName})
-                        </button>
+            </div>
+            <div className="inventory_bag"
+                onClick={toggleInventory}
+                style={{ backgroundImage: `url(${apiUrl}/items/inventory.png)` }}>
+            </div>
+            <div className={`inventory_menu ${isInventoryOpen ? "open" : ""}`}>
+
+                <h1>Inventáø</h1>
+                <p>Životy: {playerStats.health}</p>
+                <p>Útok: {playerStats.attack}</p>
+                <p>Obrana: {playerStats.defense}</p>
+                <ul>
+                    {Object.values(inventory).map(({ item, count }) => (
+                        <li key={item.itemsId}>
+                            <img
+                                src={`${apiUrl}${item.itemImagePath}`}
+                                alt={item.itemName}
+                                style={{ width: "40px", height: "auto" }}
+                            />
+                            {item.itemName} (x{count})
+                            {item.itemDescription}
+                            {item.isConsumable && !item.forStory && (
+                                <button onClick={() => {
+                                    setPlayerStats(prevStats => {
+                                        const healedHealth = Math.min(prevStats.health + item.health!, 100);
+                                        return { ...prevStats, health: healedHealth };
+                                    });
+                                    handleUseItem(item);
+                                    const enemyDamage = Math.max(battle.enemyAttack - playerStats.defense, 0);
+                                    setPlayerStats(prevStats => {
+                                        const newPlayerHealth = prevStats.health - enemyDamage;
+                                        if (newPlayerHealth <= 0) {
+                                            navigate("/location/0"); 
+                                            return { ...prevStats, health: 0 };
+                                        }
+                                        return { ...prevStats, health: newPlayerHealth };
+                                    });
+                                }}>Použít</button>
+                            )}
+                            {!item.isConsumable && !item.forStory && (
+                                isItemEquipped(item) ? (
+                                    <span>Nasazeno</span>
+                                ) : (
+                                    <button onClick={() => equipItem(item)}>Nasadit</button>
+                                )
+                            )}
+                        </li>
                     ))}
+                </ul>
+                <button className="back_to_menu_button" onClick={() => navigate("/")}>Zpìt do menu.</button>
             </div>
         </div>
     );
