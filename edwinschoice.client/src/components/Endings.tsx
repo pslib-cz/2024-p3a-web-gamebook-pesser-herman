@@ -66,7 +66,7 @@ const Ending: React.FC = () => {
                                         : "/endings/" + ending.endingImagePath)
                                     : "/endings/lock.png"
                                     }`}
-                                alt={ending.endingName}
+                                //alt={ending.endingName}
                                 className="ending-image"
                             />
                             <div className="ending-card-text">

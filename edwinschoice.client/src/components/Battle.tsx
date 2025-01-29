@@ -32,7 +32,7 @@ interface Item {
 const Battle: React.FC = () => {
     const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
-    const { playerStats, setPlayerStats, inventory, handleUseItem, equipItem } = useInventory();
+    const { playerStats, setPlayerStats, inventory, handleUseItem, equipItem, saveGame } = useInventory();
 
     const [battle, setBattle] = useState<Battle | null>(null);
     const [enemyHealth, setEnemyHealth] = useState<number | null>(null);
@@ -108,7 +108,10 @@ const Battle: React.FC = () => {
         if (newEnemyHealth <= 0) {
             setEnemyHealth(0);
             const exitLocation = getExitLocation();
-            navigate(`/location/${exitLocation}`); 
+            if (exitLocation !== null) {
+                saveGame(exitLocation);
+                navigate(`/location/${exitLocation}`);
+            }
             return;
         }
         setEnemyHealth(newEnemyHealth);

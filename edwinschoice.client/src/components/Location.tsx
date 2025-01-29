@@ -45,7 +45,8 @@ function Location() {
         handleUseItem,
         equipItem,
         obtainedItems,
-        markItemAsObtained
+        markItemAsObtained,
+        saveGame
     } = useInventory();
 
     const navigate = useNavigate();
@@ -83,10 +84,9 @@ function Location() {
     }, [id, obtainedItems]);
 
     const handleNavigate = (toId: number | null, isBattle: boolean) => {
-        if (isBattle) {
-            navigate(`/battle/${toId}`);  
-        } else {
-            navigate(`/location/${toId}`);  
+        if (toId !== null) {
+            saveGame(toId);
+            navigate(isBattle ? `/battle/${toId}` : `/location/${toId}`);
         }
     };
     const isItemEquipped = (item: Item): boolean => {
