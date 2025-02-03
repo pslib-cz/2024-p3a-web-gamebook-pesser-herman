@@ -4,6 +4,7 @@ import { useInventory } from "./PlayerComponent";
 import './Battle.css';
 
 const apiUrl = import.meta.env.VITE_API_URL;
+
 interface Battle {
     battlesId: number;
     enemyName: string;
@@ -43,24 +44,16 @@ const Battle: React.FC = () => {
     useEffect(() => {
         const fetchBattle = async () => {
             try {
-                console.log(`Fetching battle ID: ${id}`);
                 const response = await fetch(`${apiUrl}/api/Battles/${id}`);
-
                 if (!response.ok) {
                     const errorMessage = await response.text();
                     throw new Error(`Battle not found: ${errorMessage}`);
                 }
-
                 const data: Battle = await response.json();
-                console.log("Battle data received:", data);
                 setBattle(data);
                 setEnemyHealth(data.enemyHealth);
-            } catch (error: unknown) {
-                if (error instanceof Error) {
-                    console.error("Error fetching battle:", error.message);
-                } else {
-                    console.error("Unknown error fetching battle:", error);
-                }
+            } catch (error) {
+                console.error("Error fetching battle:", error);
                 setTimeout(() => navigate("/location/0"), 2000);
             } finally {
                 setLoading(false);
@@ -68,16 +61,9 @@ const Battle: React.FC = () => {
         };
 
         const fetchConnections = async () => {
-            try {
-                const response = await fetch(`${apiUrl}/api/Battles/${id}/connections`);
-                if (!response.ok) throw new Error("Failed to fetch battle connections.");
-
-                const data: Connection[] = await response.json();
-                console.log("Connections received:", data);
-                setConnections(data);
-            } catch (error) {
-                console.error("Error fetching battle connections:", error);
-            }
+            const response = await fetch(`${apiUrl}/api/Battles/${id}/connections`);
+            const data: Connection[] = await response.json();
+            setConnections(data);
         };
 
         fetchBattle();
@@ -104,7 +90,6 @@ const Battle: React.FC = () => {
         if (!battle || enemyHealth === null) return;
         const playerDamage = Math.max(playerStats.attack - battle.enemyDefense, 0);
         const newEnemyHealth = enemyHealth - playerDamage;
-
         if (newEnemyHealth <= 0) {
             setEnemyHealth(0);
             const exitLocation = getExitLocation();
@@ -117,10 +102,9 @@ const Battle: React.FC = () => {
         setEnemyHealth(newEnemyHealth);
         const enemyDamage = Math.max(battle.enemyAttack - playerStats.defense, 0);
         const newPlayerHealth = playerStats.health - enemyDamage;
-
         if (newPlayerHealth <= 0) {
             setPlayerStats((prevStats) => ({ ...prevStats, health: 0 }));
-            navigate("/location/0"); 
+            navigate("/location/0");
         } else {
             setPlayerStats((prevStats) => ({ ...prevStats, health: newPlayerHealth }));
         }
@@ -130,37 +114,35 @@ const Battle: React.FC = () => {
     if (!battle) return <p>Battle not found</p>;
 
     return (
-        <div>
-            <h1>Battle: {battle.enemyName}</h1>
+        <div className="battle_location">
             <div
                 className="battle_background"
                 style={{
                     backgroundImage: `url(${apiUrl}${battle.battleImagePath})`,
                 }}
             ></div>
-            <p>Enemy Health: {enemyHealth}</p>
-            <div>
-                <button onClick={handleAttack}>Attack</button>
+            <h1 className="Enemy">Battle: {battle.enemyName}</h1>
+            <p className="Enemy_health">Enemy Health: {enemyHealth}</p>
+            <div >
+                <button onClick={handleAttack} className="attack">Attack</button>
             </div>
-            <div className="inventory_bag"
-                onClick={toggleInventory}
-                style={{ backgroundImage: `url(${apiUrl}/items/inventory.png)` }}>
+            <div className="inventory_bag" onClick={toggleInventory} style={{ backgroundImage: `url(${apiUrl}/items/inventory.png)` }}>
+               
             </div>
             <div className={`inventory_menu ${isInventoryOpen ? "open" : ""}`}>
-
-                <h1>Inventáø</h1>
+                <h2 className="inventory_name">Inventáø</h2>
                 <p>Životy: {playerStats.health}</p>
                 <p>Útok: {playerStats.attack}</p>
                 <p>Obrana: {playerStats.defense}</p>
                 <ul>
                     {Object.values(inventory).map(({ item, count }) => (
-                        <li key={item.itemsId}>
+                        <li key={item.itemsId} className="inventory_item">
                             <img
                                 src={`${apiUrl}${item.itemImagePath}`}
                                 alt={item.itemName}
-                                style={{ width: "40px", height: "auto" }}
+                                className="inventory_item_img"
                             />
-                            {item.itemName} (x{count})
+                            <span>{item.itemName} (x{count})</span>
                             {item.itemDescription}
                             {item.isConsumable && !item.forStory && (
                                 <button onClick={() => {
@@ -173,7 +155,7 @@ const Battle: React.FC = () => {
                                     setPlayerStats(prevStats => {
                                         const newPlayerHealth = prevStats.health - enemyDamage;
                                         if (newPlayerHealth <= 0) {
-                                            navigate("/location/0"); 
+                                            navigate("/location/0");
                                             return { ...prevStats, health: 0 };
                                         }
                                         return { ...prevStats, health: newPlayerHealth };

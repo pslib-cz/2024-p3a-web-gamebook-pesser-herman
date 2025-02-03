@@ -1,12 +1,22 @@
-body {
-    height: 100vh;
-    padding-bottom: 0;
-    margin: 0;
-    overflow: hidden;
+
+.inventory_menu.open h1 {
+    margin-left: 2em;
+  
 }
 
+.inventory_menu h1 {
+    margin-left: 2em;
+    font-size:32px;
+}
+.inventory_menu {
+    text-align:center;
+}
+.inventory_name {  
+    font-size: 32px;
+    margin-left:60px;
+}
 .battle_background {
-    height: 70vh;
+    height: 100vh;
     width: 100vw;
     display: flex;
     flex-direction: column;
@@ -16,4 +26,28 @@ body {
     text-align: center;
     background-size: cover;
     background-position: center;
+}
+.Enemy {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform:translate(-50%);
+}
+.inventory_item_img {
+    width: 40px;
+    height: auto;
+}
+.Enemy_health {
+    font-size: 24px;
+    position: fixed;
+    top: 80px;
+    left: 50%;
+    transform: translate(-50%);
+}
+.attack {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%);
+    font-size:240px;
 }
