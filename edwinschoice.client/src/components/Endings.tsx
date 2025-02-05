@@ -74,6 +74,8 @@ const Ending: React.FC = () => {
                                 <p>{ending.endingDescription}</p>
                             </div>
                         </div>
+
+
                     );
                 })}
             </div>

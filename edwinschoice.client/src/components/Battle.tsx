@@ -131,9 +131,18 @@ const Battle: React.FC = () => {
             </div>
             <div className={`inventory_menu ${isInventoryOpen ? "open" : ""}`}>
                 <h2 className="inventory_name">Inventáø</h2>
-                <p>Životy: {playerStats.health}</p>
-                <p>Útok: {playerStats.attack}</p>
-                <p>Obrana: {playerStats.defense}</p>
+                <div className="inventory_item">
+                    <div className="inventory_icon" style={{ backgroundImage: `url(${apiUrl}/items/health-removebg-preview.png)` }}></div>
+                    <p>{playerStats.health}</p>
+                </div>
+                <div className="inventory_item">
+                    <div className="inventory_icon" style={{ backgroundImage: `url(${apiUrl}/items/attack-removebg-preview.png)` }}></div>
+                    <p>{playerStats.attack}</p>
+                </div>
+                <div className="inventory_item">
+                    <div className="inventory_icon" style={{ backgroundImage: `url(${apiUrl}/items/defense-removebg-preview.png)` }}></div>
+                    <p>{playerStats.defense}</p>
+                </div>
                 <ul>
                     {Object.values(inventory).map(({ item, count }) => (
                         <li key={item.itemsId} className="inventory_item">
