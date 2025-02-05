@@ -62,9 +62,10 @@
 .ending-card p {
         margin: 0;
 }
- 
+
 .ending-image {
     width: 80px;
     height: auto;
     border-radius: 5px;
+    filter: invert(1);
 }
