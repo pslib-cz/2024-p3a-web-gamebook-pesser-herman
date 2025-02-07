@@ -144,13 +144,19 @@ function Location() {
                         <ul>
                             {Object.values(inventory).map(({ item, count }) => (
                                 <li key={item.itemsId}>
-                                    <img
+                                    
+                                    <div className="holup">
+                                        <img
                                         src={`${apiUrl}${item.itemImagePath}`}
                                         alt={item.itemName}
-                                        style={{ width: "40px", height: "auto" }}
-                                    />
-                                    {item.itemName} (x{count})
-                                    {item.itemDescription}
+                                        style={{ width: "auto", height: "80px" }}/>
+                                        <div>
+                                            <div className="item_name">
+                                                <p>{item.itemName} (x{count})</p>
+                                            </div>
+                                            <p>{item.itemDescription}</p>
+                                        </div>
+                                  </div> 
                                     {item.isConsumable && !item.forStory && (
                                         <button onClick={() => handleUseItem(item)}>Použít</button>
                                     )}
@@ -160,7 +166,7 @@ function Location() {
                                         ) : (
                                                 <button onClick={() => equipItem(item)}>Nasadit</button>
                                         )
-                                    )}
+                                    )}  
                                 </li>
                             ))}
                         </ul>
