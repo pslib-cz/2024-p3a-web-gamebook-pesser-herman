@@ -28,7 +28,12 @@ body {
     width: 100vw;
     position: relative; 
 }
+.inventory_container{
 
+    display:flex;
+    flex-direction:row;
+    justify-content:space-evenly
+}
 .player-stats {
     position: absolute;
     top: 10px;
@@ -176,5 +181,4 @@ body {
     background-repeat: no-repeat;
     background-position: center;
     filter: invert(1);
-    margin-left:30%;
 }

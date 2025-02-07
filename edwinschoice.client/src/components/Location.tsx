@@ -128,7 +128,7 @@ function Location() {
                     <div className={`inventory_menu ${isInventoryOpen ? "open" : ""}`}>
                         
                         <h1>Inventáø</h1>
-                        <div className="inventory_item">
+                        <div className="inventory_container"> <div className="inventory_item">
                             <div className="inventory_icon" style={{ backgroundImage: `url(${apiUrl}/items/health-removebg-preview.png)` }}></div>
                             <p>{playerStats.health}</p>
                         </div>
@@ -139,6 +139,7 @@ function Location() {
                         <div className="inventory_item">
                             <div className="inventory_icon" style={{ backgroundImage: `url(${apiUrl}/items/defense-removebg-preview.png)` }}></div>
                             <p>{playerStats.defense}</p>
+                            </div>
                         </div>
                         <ul>
                             {Object.values(inventory).map(({ item, count }) => (
