@@ -100,13 +100,6 @@ const PlayerComponent: React.FC<{ children: ReactNode }> = ({ children }) => {
     };
 
     const handleUseItem = (item: Item) => {
-        if (!item.isConsumable || !item.health) return;
-
-        setPlayerStats((prevStats) => ({
-            ...prevStats,
-            health: Math.min(prevStats.health + item.health!, 100),
-        }));
-
         setInventory((prevInventory) => {
             const updatedInventory = { ...prevInventory };
             const existingItem = updatedInventory[item.itemsId];
