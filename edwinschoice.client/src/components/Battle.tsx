@@ -194,14 +194,25 @@ const Battle: React.FC = () => {
 
                 <ul>
                     {Object.values(inventory).map(({ item, count }) => (
-                        <li key={item.itemsId} className="inventory_item">
-                            <img src={`${apiUrl}${item.itemImagePath}`} alt={item.itemName} className="inventory_item_img" />
-                            <span>{item.itemName} (x{count})</span>
+                        <li key={item.itemsId}>
+                            <div className="holup">
+                                <img src={`${apiUrl}${item.itemImagePath}`} alt={item.itemName} style={{ width: "auto", height: "80px" }} />
+                                <div>
+                                    <div className="item_name">
+                                        <p>{item.itemName} (x{count})</p>
+                                    </div>
+                                    <p>{item.itemDescription}</p>
+                                </div>
+                            </div>
                             {item.isConsumable && !item.forStory && (
                                 <button onClick={() => handleHeal(item)}>Použít</button>
                             )}
                             {!item.isConsumable && !item.forStory && (
-                                isItemEquipped(item) ? <span>Nasazeno</span> : <button onClick={() => equipItem(item)}>Nasadit</button>
+                                isItemEquipped(item) ? (
+                                    <span>Nasazeno</span>
+                                ) : (
+                                    <button onClick={() => equipItem(item)}>Nasadit</button>
+                                )
                             )}
                         </li>
                     ))}

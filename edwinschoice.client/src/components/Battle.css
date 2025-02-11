@@ -53,3 +53,8 @@
     transform: translate(-50%);
     font-size:30px;
 }
+.holup {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
