@@ -1,6 +1,6 @@
 import React, { useEffect, useReducer } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useInventory } from "./PlayerComponent";
+import { useInventory, Item } from "./PlayerComponent";
 import './Battle.css';
 
 const apiUrl = import.meta.env.VITE_API_URL;
@@ -16,18 +16,6 @@ interface Battle {
 
 interface Connection {
     toId: number;
-}
-
-interface Item {
-    itemsId: number;
-    itemName: string;
-    itemDescription: string;
-    itemImagePath: string;
-    isConsumable: boolean;
-    health?: number;
-    attack?: number;
-    defense?: number;
-    forStory: boolean;
 }
 
 interface State {
@@ -65,9 +53,9 @@ const battleReducer = (state: State, action: Action): State => {
 const Battle: React.FC = () => {
     const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
-    const { playerStats, setPlayerStats, inventory, handleUseItem, equipItem, saveGame } = useInventory();
+    const { playerStats, dispatch, inventory, saveGame } = useInventory();
 
-    const [state, dispatch] = useReducer(battleReducer, {
+    const [state, localDispatch] = useReducer(battleReducer, {
         battle: null,
         enemyHealth: null,
         connections: [],
@@ -84,19 +72,19 @@ const Battle: React.FC = () => {
                     throw new Error(`Battle not found: ${errorMessage}`);
                 }
                 const data: Battle = await response.json();
-                dispatch({ type: "SET_BATTLE", payload: data });
+                localDispatch({ type: "SET_BATTLE", payload: data });
             } catch (error) {
                 console.error("Error fetching battle:", error);
                 setTimeout(() => navigate("/location/0"), 2000);
             } finally {
-                dispatch({ type: "SET_LOADING", payload: false });
+                localDispatch({ type: "SET_LOADING", payload: false });
             }
         };
 
         const fetchConnections = async () => {
             const response = await fetch(`${apiUrl}/api/Battles/${id}/connections`);
             const data: Connection[] = await response.json();
-            dispatch({ type: "SET_CONNECTIONS", payload: data });
+            localDispatch({ type: "SET_CONNECTIONS", payload: data });
         };
 
         fetchBattle();
@@ -104,7 +92,7 @@ const Battle: React.FC = () => {
     }, [id, navigate]);
 
     const toggleInventory = () => {
-        dispatch({ type: "TOGGLE_INVENTORY" });
+        localDispatch({ type: "TOGGLE_INVENTORY" });
     };
 
     const isItemEquipped = (item: Item) => {
@@ -125,7 +113,7 @@ const Battle: React.FC = () => {
         const newEnemyHealth = state.enemyHealth - playerDamage;
 
         if (newEnemyHealth <= 0) {
-            dispatch({ type: "SET_ENEMY_HEALTH", payload: 0 });
+            localDispatch({ type: "SET_ENEMY_HEALTH", payload: 0 });
             const exitLocation = getExitLocation();
             if (exitLocation !== null) {
                 saveGame(exitLocation);
@@ -134,33 +122,36 @@ const Battle: React.FC = () => {
             return;
         }
 
-        dispatch({ type: "SET_ENEMY_HEALTH", payload: newEnemyHealth });
+        localDispatch({ type: "SET_ENEMY_HEALTH", payload: newEnemyHealth });
 
         const enemyDamage = Math.max(state.battle.enemyAttack - playerStats.defense, 0);
         const newPlayerHealth = playerStats.health - enemyDamage;
 
         if (newPlayerHealth <= 0) {
-            setPlayerStats((prevStats) => ({ ...prevStats, health: 0 }));
+            dispatch({ type: "SET_PLAYER_STATS", payload: { ...playerStats, health: 0 } });
             navigate("/location/0");
         } else {
-            setPlayerStats((prevStats) => ({ ...prevStats, health: newPlayerHealth }));
+            dispatch({ type: "SET_PLAYER_STATS", payload: { ...playerStats, health: newPlayerHealth } });
         }
     };
 
     const handleHeal = (item: Item) => {
-        setPlayerStats(prevStats => {
-            const healedHealth = Math.min(prevStats.health + (item.health || 0), 100);
-            const enemyDamage = Math.max(state.battle!.enemyAttack - prevStats.defense, 0);
-            const newPlayerHealth = healedHealth - enemyDamage;
+        const healedHealth = Math.min(playerStats.health + (item.health || 0), 100);
+        const enemyDamage = Math.max(state.battle!.enemyAttack - playerStats.defense, 0);
+        const newPlayerHealth = healedHealth - enemyDamage;
 
-            if (newPlayerHealth <= 0) {
-                navigate("/location/0");
-                return { ...prevStats, health: 0 };
-            }
+        dispatch({ type: "USE_ITEM", payload: item });
 
-            return { ...prevStats, health: newPlayerHealth };
-        });
-        handleUseItem(item);
+        if (newPlayerHealth <= 0) {
+            dispatch({ type: "SET_PLAYER_STATS", payload: { ...playerStats, health: 0 } });
+            navigate("/location/0");
+        } else {
+            dispatch({ type: "SET_PLAYER_STATS", payload: { ...playerStats, health: newPlayerHealth } });
+        }
+    };
+
+    const handleEquip = (item: Item) => {
+        dispatch({ type: "EQUIP_ITEM", payload: item });
     };
 
     if (state.loading) return <p>Loading battle...</p>;
@@ -193,7 +184,7 @@ const Battle: React.FC = () => {
                 </div>
 
                 <ul>
-                    {Object.values(inventory).map(({ item, count }) => (
+                    {Object.values(inventory).map(({ item, count }: { item: Item; count: number }) => (
                         <li key={item.itemsId}>
                             <div className="holup">
                                 <img src={`${apiUrl}${item.itemImagePath}`} alt={item.itemName} style={{ width: "auto", height: "80px" }} />
@@ -211,7 +202,7 @@ const Battle: React.FC = () => {
                                 isItemEquipped(item) ? (
                                     <span>Nasazeno</span>
                                 ) : (
-                                    <button onClick={() => equipItem(item)}>Nasadit</button>
+                                    <button onClick={() => handleEquip(item)}>Nasadit</button>
                                 )
                             )}
                         </li>

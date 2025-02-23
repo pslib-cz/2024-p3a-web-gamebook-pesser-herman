@@ -1,6 +1,6 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import React, { createContext, useContext, useReducer, useEffect, ReactNode } from "react";
 
-interface Item {
+export interface Item {
     itemsId: number;
     itemName: string;
     itemDescription: string;
@@ -12,12 +12,12 @@ interface Item {
     itemImagePath: string;
 }
 
-interface InventoryItem {
+export interface InventoryItem {
     item: Item;
     count: number;
 }
 
-interface PlayerStats {
+export interface PlayerStats {
     health: number;
     attack: number;
     defense: number;
@@ -25,18 +25,113 @@ interface PlayerStats {
     equippedArmor: Item | null;
 }
 
+export interface State {
+    inventory: { [key: number]: InventoryItem };
+    playerStats: PlayerStats;
+    obtainedItems: number[];
+    lastLocation: number | null;
+}
+
+export type Action =
+    | { type: "SET_PLAYER_STATS"; payload: PlayerStats }
+    | { type: "ADD_ITEM"; payload: Item }
+    | { type: "USE_ITEM"; payload: Item }
+    | { type: "EQUIP_ITEM"; payload: Item }
+    | { type: "MARK_OBTAINED"; payload: number }
+    | { type: "SAVE_LOCATION"; payload: number }
+    | { type: "LOAD_GAME"; payload: State };
+
+export const initialState: State = {
+    inventory: {},
+    playerStats: {
+        health: 100,
+        attack: 10,
+        defense: 5,
+        equippedWeapon: null,
+        equippedArmor: null,
+    },
+    obtainedItems: [],
+    lastLocation: null,
+};
+
+function inventoryReducer(state: State, action: Action): State {
+    switch (action.type) {
+        case "SET_PLAYER_STATS":
+            return { ...state, playerStats: action.payload };
+
+        case "ADD_ITEM": {
+            const item = action.payload;
+            const existingItem = state.inventory[item.itemsId];
+            return {
+                ...state,
+                inventory: {
+                    ...state.inventory,
+                    [item.itemsId]: existingItem
+                        ? { item, count: existingItem.count + 1 }
+                        : { item, count: 1 },
+                },
+            };
+        }
+
+        case "USE_ITEM": {
+            const item = action.payload;
+            const existingItem = state.inventory[item.itemsId];
+            if (!existingItem) return state;
+            const updatedInventory = { ...state.inventory };
+            if (existingItem.count > 1) {
+                updatedInventory[item.itemsId] = { ...existingItem, count: existingItem.count - 1 };
+            } else {
+                delete updatedInventory[item.itemsId];
+            }
+            return { ...state, inventory: updatedInventory };
+        }
+
+        case "EQUIP_ITEM": {
+            const item = action.payload;
+            if (item.forStory || item.isConsumable) return state;
+            const updatedStats = { ...state.playerStats };
+
+            if (item.attack !== undefined) {
+                updatedStats.attack =
+                    state.playerStats.attack +
+                    item.attack -
+                    (state.playerStats.equippedWeapon?.attack || 0);
+                updatedStats.equippedWeapon = item;
+            }
+            if (item.defense !== undefined) {
+                updatedStats.defense =
+                    state.playerStats.defense +
+                    item.defense -
+                    (state.playerStats.equippedArmor?.defense || 0);
+                updatedStats.equippedArmor = item;
+            }
+            return { ...state, playerStats: updatedStats };
+        }
+
+        case "MARK_OBTAINED":
+            return {
+                ...state,
+                obtainedItems: [...new Set([...state.obtainedItems, action.payload])],
+            };
+
+        case "SAVE_LOCATION":
+            return { ...state, lastLocation: action.payload };
+
+        case "LOAD_GAME":
+            return action.payload;
+
+        default:
+            return state;
+    }
+}
+
 interface InventoryContextType {
     inventory: { [key: number]: InventoryItem };
     playerStats: PlayerStats;
     obtainedItems: number[];
     lastLocation: number | null;
-    setPlayerStats: React.Dispatch<React.SetStateAction<PlayerStats>>;
-    addItemToInventory: (item: Item) => void;
-    handleUseItem: (item: Item) => void;
-    equipItem: (item: Item) => void;
-    markItemAsObtained: (itemId: number) => void;
+    dispatch: React.Dispatch<Action>;
     saveGame: (currentLocation: number) => void;
-
 }
 
 const InventoryContext = createContext<InventoryContextType | undefined>(undefined);
@@ -50,103 +145,25 @@ export const useInventory = (): InventoryContextType => {
 };
 
 const PlayerComponent: React.FC<{ children: ReactNode }> = ({ children }) => {
-    const [inventory, setInventory] = useState<{ [key: number]: InventoryItem }>({});
-    const [playerStats, setPlayerStats] = useState<PlayerStats>({
-        health: 100,
-        attack: 10,
-        defense: 5,
-        equippedWeapon: null,
-        equippedArmor: null,
-    });
-
-    const [obtainedItems, setObtainedItems] = useState<number[]>([]);
-    const [lastLocation, setLastLocation] = useState<number | null>(null);
+    const [state, dispatch] = useReducer(inventoryReducer, initialState);
 
     useEffect(() => {
         const savedGame = localStorage.getItem("gameState");
         if (savedGame) {
-            const { savedStats, savedInventory, savedLocation, savedObtainedItems } = JSON.parse(savedGame);
-            setPlayerStats(savedStats);
-            setInventory(savedInventory);
-            setLastLocation(savedLocation);
-            setObtainedItems(savedObtainedItems);
+            dispatch({ type: "LOAD_GAME", payload: JSON.parse(savedGame) });
         }
     }, []);
 
+    useEffect(() => {
+        localStorage.setItem("gameState", JSON.stringify(state));
+    }, [state]);
+
     const saveGame = (currentLocation: number) => {
-        const gameState = {
-            savedStats: playerStats,
-            savedInventory: inventory,
-            savedLocation: currentLocation,
-            savedObtainedItems: obtainedItems,
-        };
-        localStorage.setItem("gameState", JSON.stringify(gameState));
-    };
-
-    const markItemAsObtained = (itemId: number) => {
-        setObtainedItems((prev) => [...new Set([...prev, itemId])]);
-    };
-
-    const addItemToInventory = (item: Item) => {
-        setInventory((prevInventory) => {
-            const existingItem = prevInventory[item.itemsId];
-            return {
-                ...prevInventory,
-                [item.itemsId]: existingItem
-                    ? { item, count: existingItem.count + 1 }
-                    : { item, count: 1 },
-            };
-        });
-    };
-
-    const handleUseItem = (item: Item) => {
-        setInventory((prevInventory) => {
-            const updatedInventory = { ...prevInventory };
-            const existingItem = updatedInventory[item.itemsId];
-            if (!existingItem) return prevInventory;
-
-            if (existingItem.count > 1) {
-                updatedInventory[item.itemsId] = { ...existingItem, count: existingItem.count - 1 };
-            } else {
-                delete updatedInventory[item.itemsId];
-            }
-
-            return updatedInventory;
-        });
-    };
-
-    const equipItem = (item: Item) => {
-        if (item.forStory || item.isConsumable) return;
-
-        setPlayerStats((prevStats) => {
-            const updatedStats = { ...prevStats };
-
-            if (item.attack !== undefined) {
-                updatedStats.attack =
-                    prevStats.attack +
-                    item.attack -
-                    (prevStats.equippedWeapon?.attack || 0);
-                updatedStats.equippedWeapon = item;
-            }
-
-            if (item.defense !== undefined) {
-                updatedStats.defense =
-                    prevStats.defense +
-                    item.defense -
-                    (prevStats.equippedArmor?.defense || 0);
-                updatedStats.equippedArmor = item;
-            }
-
-            return updatedStats;
-        });
+        dispatch({ type: "SAVE_LOCATION", payload: currentLocation });
     };
 
     return (
-        <InventoryContext.Provider
-            value={{
-                inventory, playerStats, addItemToInventory, handleUseItem, equipItem, obtainedItems, markItemAsObtained, setPlayerStats, lastLocation, saveGame
-            }}
-        >
+        <InventoryContext.Provider value={{ ...state, dispatch, saveGame }}>
             {children}
         </InventoryContext.Provider>
     );

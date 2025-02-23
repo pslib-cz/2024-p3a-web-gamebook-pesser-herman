@@ -1,25 +1,15 @@
 import { useEffect, useReducer } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { useInventory } from "./PlayerComponent";
-import './Location.css';
+import { useInventory, Item } from "./PlayerComponent";
+import "./Location.css";
 
-interface Location {
+interface LocationData {
     locationName: string;
     locationDescription: string;
     locationImagePath: string;
     itemReobtainable: boolean | null;
     itemId: number | null;
     item: Item | null;
-}
-
-interface Item {
-    itemsId: number;
-    itemName: string;
-    itemDescription: string;
-    itemImagePath: string;
-    isConsumable: boolean;
-    forStory: boolean;
-    health?: number;
 }
 
 interface Connection {
@@ -33,18 +23,18 @@ interface Connection {
 const apiUrl = import.meta.env.VITE_API_URL;
 
 type State = {
-    location: Location | null;
+    location: LocationData | null;
     connections: Connection[];
     isInventoryOpen: boolean;
 };
 
 type Action =
-    | { type: "SET_LOCATION"; payload: Location }
+    | { type: "SET_LOCATION"; payload: LocationData }
     | { type: "SET_CONNECTIONS"; payload: Connection[] }
     | { type: "TOGGLE_INVENTORY" }
     | { type: "REMOVE_ITEM" };
 
-const locationReducer = (state: State, action: Action): State => {
+function locationReducer(state: State, action: Action): State {
     switch (action.type) {
         case "SET_LOCATION":
             return { ...state, location: action.payload };
@@ -59,7 +49,7 @@ const locationReducer = (state: State, action: Action): State => {
         default:
             return state;
     }
-};
+}
 
 function Location() {
     const { id } = useParams<{ id: string }>();
@@ -71,44 +61,48 @@ function Location() {
         isInventoryOpen: false
     });
 
-    const {
-        inventory, playerStats, setPlayerStats, addItemToInventory, handleUseItem, equipItem, obtainedItems, markItemAsObtained, saveGame
-    } = useInventory();
+    const { inventory, playerStats, obtainedItems, dispatch: inventoryDispatch, saveGame } = useInventory();
 
     useEffect(() => {
+        if (!id) return;
         fetch(`${apiUrl}/api/Locations/${id}`)
             .then((response) => response.json())
-            .then((data: Location) => {
+            .then((data: LocationData) => {
+                // If item is not reobtainable and is already obtained, remove it
                 if (data.item && !data.itemReobtainable && obtainedItems.includes(data.item.itemsId)) {
                     data.item = null;
                     data.itemId = null;
                 }
                 dispatch({ type: "SET_LOCATION", payload: data });
 
-                if (id) {
-                    const storedLocations = localStorage.getItem("reachedLocations");
-                    const reachedLocations = storedLocations ? JSON.parse(storedLocations) : [];
-
-                    if (!reachedLocations.includes(Number(id))) {
-                        reachedLocations.push(Number(id));
-                        localStorage.setItem("reachedLocations", JSON.stringify(reachedLocations));
-                    }
+                const storedLocations = localStorage.getItem("reachedLocations");
+                const reachedLocations = storedLocations ? JSON.parse(storedLocations) : [];
+                if (!reachedLocations.includes(Number(id))) {
+                    reachedLocations.push(Number(id));
+                    localStorage.setItem("reachedLocations", JSON.stringify(reachedLocations));
                 }
             })
             .catch(console.error);
 
         fetch(`${apiUrl}/api/Locations/${id}/connections`)
             .then((response) => response.json())
-            .then((data) => dispatch({ type: "SET_CONNECTIONS", payload: data }))
+            .then((connections: Connection[]) => {
+                if (!Array.isArray(connections)) {
+                    console.error("Connections are not an array:", connections);
+                    return;
+                }
+                dispatch({ type: "SET_CONNECTIONS", payload: connections });
+            })
             .catch(console.error);
     }, [id, obtainedItems]);
 
     const handleNavigate = (toId: number | null, isBattle: boolean) => {
-        if (toId !== null) {
-            saveGame(toId);
-            navigate(isBattle ? `/battle/${toId}` : `/location/${toId}`);
-        }
+        if (toId === null) return;
+        saveGame(toId);
+        inventoryDispatch({ type: "SAVE_LOCATION", payload: toId });
+        navigate(isBattle ? `/battle/${toId}` : `/location/${toId}`);
     };
+
     const isItemEquipped = (item: Item): boolean => {
         return (
             playerStats.equippedWeapon?.itemsId === item.itemsId ||
@@ -118,24 +112,26 @@ function Location() {
 
     const handleItemClick = () => {
         if (!state.location || !state.location.item) return;
-
-        addItemToInventory(state.location.item);
-        markItemAsObtained(state.location.item.itemsId);
-
+        inventoryDispatch({ type: "ADD_ITEM", payload: state.location.item });
+        inventoryDispatch({ type: "MARK_OBTAINED", payload: state.location.item.itemsId });
         if (!state.location.itemReobtainable) {
             dispatch({ type: "REMOVE_ITEM" });
         }
     };
+
     const toggleInventory = () => {
         dispatch({ type: "TOGGLE_INVENTORY" });
     };
 
     const handleHeal = (item: Item) => {
-        setPlayerStats((prevStats) => ({
-            ...prevStats,
-            health: Math.min(prevStats.health + item.health!, 100),
-        }));
-        handleUseItem(item);
+        inventoryDispatch({
+            type: "SET_PLAYER_STATS",
+            payload: {
+                ...playerStats,
+                health: Math.min(playerStats.health + (item.health ?? 0), 100),
+            },
+        });
+        inventoryDispatch({ type: "USE_ITEM", payload: item });
     };
 
     return (
@@ -157,15 +153,24 @@ function Location() {
                         <h1>Inventáø</h1>
                         <div className="inventory_container">
                             <div className="inventory_item">
-                                <div className="inventory_icon" style={{ backgroundImage: `url(${apiUrl}/items/health-removebg-preview.png)` }}></div>
+                                <div
+                                    className="inventory_icon"
+                                    style={{ backgroundImage: `url(${apiUrl}/items/health-removebg-preview.png)` }}
+                                ></div>
                                 <p>{playerStats.health}</p>
                             </div>
                             <div className="inventory_item">
-                                <div className="inventory_icon" style={{ backgroundImage: `url(${apiUrl}/items/attack-removebg-preview.png)` }}></div>
+                                <div
+                                    className="inventory_icon"
+                                    style={{ backgroundImage: `url(${apiUrl}/items/attack-removebg-preview.png)` }}
+                                ></div>
                                 <p>{playerStats.attack}</p>
                             </div>
                             <div className="inventory_item">
-                                <div className="inventory_icon" style={{ backgroundImage: `url(${apiUrl}/items/defense-removebg-preview.png)` }}></div>
+                                <div
+                                    className="inventory_icon"
+                                    style={{ backgroundImage: `url(${apiUrl}/items/defense-removebg-preview.png)` }}
+                                ></div>
                                 <p>{playerStats.defense}</p>
                             </div>
                         </div>
@@ -173,7 +178,11 @@ function Location() {
                             {Object.values(inventory).map(({ item, count }) => (
                                 <li key={item.itemsId}>
                                     <div className="holup">
-                                        <img src={`${apiUrl}${item.itemImagePath}`} alt={item.itemName} style={{ width: "auto", height: "80px" }} />
+                                        <img
+                                            src={`${apiUrl}${item.itemImagePath}`}
+                                            alt={item.itemName}
+                                            style={{ width: "auto", height: "80px" }}
+                                        />
                                         <div>
                                             <div className="item_name">
                                                 <p>{item.itemName} (x{count})</p>
@@ -188,13 +197,21 @@ function Location() {
                                         isItemEquipped(item) ? (
                                             <span>Nasazeno</span>
                                         ) : (
-                                            <button onClick={() => equipItem(item)}>Nasadit</button>
+                                            <button
+                                                onClick={() =>
+                                                    inventoryDispatch({ type: "EQUIP_ITEM", payload: item })
+                                                }
+                                            >
+                                                Nasadit
+                                            </button>
                                         )
                                     )}
                                 </li>
                             ))}
                         </ul>
-                        <button className="back_to_menu_button" onClick={() => navigate("/")}>Zpìt do menu.</button>
+                        <button className="back_to_menu_button" onClick={() => navigate("/")}>
+                            Zpìt do menu.
+                        </button>
                     </div>
 
                     <h1 className="location_title">{state.location.locationName}</h1>
@@ -210,15 +227,15 @@ function Location() {
                     )}
 
                     <div className="connections">
-                        {state.connections.map((connection: Connection) => (
-                            <div key={connection.toId} onClick={() => handleNavigate(connection.toId, connection.isBattle)}>
-                                {"> " + connection.connectionText}
-                            </div>
-                        ))}
-                    </div>
-
-                    <div className="text_box" style={{ backgroundImage: `url(${apiUrl}/images/dialog_background.webp)` }}>
-                        <p>{state.location.locationDescription}</p>
+                        {Array.isArray(state.connections) &&
+                            state.connections.map((connection: Connection) => (
+                                <div
+                                    key={connection.toId}
+                                    onClick={() => handleNavigate(connection.toId, connection.isBattle)}
+                                >
+                                    {"> " + connection.connectionText}
+                                </div>
+                            ))}
                     </div>
                 </div>
             ) : (
@@ -226,7 +243,6 @@ function Location() {
             )}
         </div>
     );
-
 }
 
 export default Location;

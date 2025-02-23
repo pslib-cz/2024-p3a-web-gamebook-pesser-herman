@@ -1,33 +1,31 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { useInventory, initialState } from "./PlayerComponent";
 import "./Menu.css";
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
 function Menu() {
     const navigate = useNavigate();
+    const { lastLocation, dispatch } = useInventory();
     const [hasSavedGame, setHasSavedGame] = useState(false);
 
     useEffect(() => {
-        const savedGame = localStorage.getItem("gameState");
-        if (savedGame) {
+        if (lastLocation !== null) {
             setHasSavedGame(true);
         }
-    }, []);
+    }, [lastLocation]);
 
     const handleContinue = () => {
-        const savedGame = localStorage.getItem("gameState");
-        if (savedGame) {
-            const { savedLocation } = JSON.parse(savedGame);
-            if (savedLocation !== null) {
-                navigate(`/location/${savedLocation}`);
-            }
+        if (lastLocation !== null) {
+            navigate(`/location/${lastLocation}`);
         }
     };
 
     const handleNewGame = () => {
-        localStorage.removeItem("gameState"); 
-        navigate("/location/1"); 
+        localStorage.removeItem("gameState");
+        dispatch({ type: "LOAD_GAME", payload: initialState });
+        navigate("/location/1");
     };
 
     return (
