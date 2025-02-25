@@ -237,6 +237,9 @@ function Location() {
                                 </div>
                             ))}
                     </div>
+                    <div className="text_box" style={{ backgroundImage: `url(${apiUrl}/images/dialog_background.webp)` }}>
+                        <p>{state.location.locationDescription}</p>
+                    </div>
                 </div>
             ) : (
                 <p>Loading...</p>
