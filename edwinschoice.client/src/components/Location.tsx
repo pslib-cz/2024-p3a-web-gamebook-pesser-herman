@@ -18,6 +18,7 @@ interface Connection {
     locationDescription: string;
     connectionText: string;
     isBattle: boolean;
+    itemId: number | null;
 }
 
 const apiUrl = import.meta.env.VITE_API_URL;
@@ -90,10 +91,20 @@ function Location() {
                     console.error("Connections are not an array:", connections);
                     return;
                 }
-                dispatch({ type: "SET_CONNECTIONS", payload: connections });
+                const filteredConnections = connections.filter((connection) => {
+                    if (!connection.itemId) return true; 
+                    return inventory[connection.itemId] !== undefined; 
+                });
+                dispatch({ type: "SET_CONNECTIONS", payload: filteredConnections });
             })
             .catch(console.error);
-    }, [id, obtainedItems]);
+    }, [id, obtainedItems, inventory]);
+
+    useEffect(() => {
+        if (state.location) {
+            document.title = `${state.location.locationName}`;
+        }
+    }, [state.location]);
 
     const handleNavigate = (toId: number | null, isBattle: boolean) => {
         if (toId === null) return;

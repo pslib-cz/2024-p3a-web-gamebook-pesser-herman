@@ -45,7 +45,6 @@
     transform: translate(-50%);
 }
 .attack {
-    padding:.5rem 1rem ;
     border-radius:5px;
     position: fixed;
     top: 50%;
@@ -55,7 +54,6 @@
 }
 
 .attack2 {
-    padding: .5rem 1rem;
     border-radius: 5px;
     position: fixed;
     top: 60%;

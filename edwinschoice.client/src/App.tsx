@@ -7,16 +7,16 @@ import Ending from './components/Endings';
 
 function App() {
     return (
-        <PlayerComponent>
-            <Router>
+        <Router>
+            <PlayerComponent>
                 <Routes>
                     <Route path="/" element={<Menu />} />
                     <Route path="/location/:id" element={<Location />} />
                     <Route path="/battle/:id" element={<Battle />} />
                     <Route path="/endings" element={<Ending />} />
                 </Routes>
-            </Router>
-        </PlayerComponent>
+            </PlayerComponent>
+        </Router>
     );
 }
 
