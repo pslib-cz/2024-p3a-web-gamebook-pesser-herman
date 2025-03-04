@@ -250,19 +250,19 @@ const Battle: React.FC = () => {
                                 </div>
                             </div>
                             {item.isConsumable && !item.forStory && (
-                                <button onClick={() => handleHeal(item)}>Použít</button>
+                                <button onClick={() => handleHeal(item)}>Use</button>
                             )}
                             {!item.isConsumable && !item.forStory && (
                                 isItemEquipped(item) ? (
-                                    <button onClick={() => handleUnequip(item)}>Sundat</button>
+                                    <button onClick={() => handleUnequip(item)}>Unequip</button>
                                 ) : (
-                                    <button onClick={() => handleEquip(item)}>Nasadit</button>
+                                    <button onClick={() => handleEquip(item)}>Equip</button>
                                 )
                             )}
                         </li>
                     ))}
                 </ul>
-                <button className="back_to_menu_button" onClick={() => navigate("/")}>Zpìt do menu.</button>
+                <button className="back_to_menu_button" onClick={() => navigate("/")}>Back to menu.</button>
             </div>
         </div>
     );

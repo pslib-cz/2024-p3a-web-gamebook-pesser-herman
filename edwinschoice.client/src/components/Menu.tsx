@@ -38,17 +38,17 @@ function Menu() {
             </div>
 
             <button className="button" onClick={handleNewGame}>
-                Nová hra
+                New Game
             </button>
 
             {hasSavedGame && (
                 <button className="button" onClick={handleContinue}>
-                    Pokraèovat
+                    Continue
                 </button>
             )}
 
             <Link to="/endings">
-                <button className="button">Konce</button>
+                <button className="button">Endings</button>
             </Link>
         </div>
     );

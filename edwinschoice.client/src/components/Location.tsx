@@ -168,7 +168,7 @@ function Location() {
                     ></div>
 
                     <div className={`inventory_menu ${state.isInventoryOpen ? "open" : ""}`}>
-                        <h1>Inventáø</h1>
+                        <h1>Inventory</h1>
                         <div className="inventory_container">
                             <div className="inventory_item">
                                 <div
@@ -209,20 +209,20 @@ function Location() {
                                         </div>
                                     </div>
                                     {item.isConsumable && !item.forStory && (
-                                        <button onClick={() => handleHeal(item)}>Použít</button>
+                                        <button onClick={() => handleHeal(item)}>Use</button>
                                     )}
                                     {!item.isConsumable && !item.forStory && (
                                         isItemEquipped(item) ? (
-                                            <button onClick={() => handleUnequip(item)}>Sundat</button>
+                                            <button onClick={() => handleUnequip(item)}>Uneaqip</button>
                                         ) : (
-                                            <button onClick={() => handleEquip(item)}>Nasadit</button>
+                                            <button onClick={() => handleEquip(item)}>Equip</button>
                                         )
                                     )}
                                 </li>
                             ))}
                         </ul>
                         <button className="back_to_menu_button" onClick={() => navigate("/")}>
-                            Zpìt do menu.
+                            Back to menu.
                         </button>
                     </div>
 

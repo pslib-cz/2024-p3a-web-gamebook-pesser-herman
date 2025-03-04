@@ -78,7 +78,7 @@ const Ending: React.FC = () => {
                     );
                 })}
             </div>
-            <button className="back_to_menu_button" onClick={() => navigate("/")}>Zpìt do menu.</button>
+            <button className="back_to_menu_button" onClick={() => navigate("/")}>Back to menu.</button>
         </div>
     );
 };
