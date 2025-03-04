@@ -209,7 +209,7 @@ const Battle: React.FC = () => {
                     style={{ width: `${(state.enemyHealth! / state.battle!.enemyHealth) * 100}%` }}
                 ></div>
             </div>
-            <p className="Enemy_health">HP/{state.enemyHealth}</p>
+            <p className="Enemy_health">HP:{state.enemyHealth}</p>
             <div className="attacks">
             <button onClick={handleAttack} className="attack">
                 <img src={`${apiUrl}/items/NormalAttack.png`} alt="Normální Útok"  />

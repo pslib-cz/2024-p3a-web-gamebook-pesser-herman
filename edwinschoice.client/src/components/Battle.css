@@ -10,97 +10,149 @@
     top: 100px;
     position: fixed;
 }
+@media screen and (min-width: 601px) {
 
-.health-bar {
-    height: 100%;
-    background-color: red;
-    transition: width 0.3s ease-in-out;
-}
+    .attacks {
+        display: flex;
+        flex-direction: row;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%);
+        font-size: 30px;
+        gap: 20rem;
+    }
 
-.inventory_menu.open h1 {
-    margin-left: 2em;
-  
-}
+    .attack {
+        border-radius: 5px;
+        width: 20px;
+        height: 20px;
+    }
 
-.inventory_menu h1 {
-    margin-left: 2em;
-    font-size:32px;
+        .attack > img {
+            top: -40px;
+            left: -60px;
+            position: fixed;
+            width: 200px;
+        }
+
+    .attack2 {
+        border-radius: 5px;
+        width: 20px;
+        height: 20px;
+    }
+
+        .attack2 > img {
+            top: -40px;
+            left: 240px;
+            position: fixed;
+            width: 200px;
+        }
+
 }
-.inventory_menu {
-    text-align:center;
-}
-.inventory_name {  
-    font-size: 32px;
-    margin-left:60px;
-}
-.battle_background {
-    height: 100vh;
-    width: 100vw;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    text-align: center;
-    background-size: cover;
-    background-position: center;
-}
-.Enemy {
-    position: fixed;
-    top: 20px;
-    left: 50%;
-    transform:translate(-50%);
-}
-.inventory_item_img {
-    width: 40px;
-    height: auto;
-}
-.Enemy_health {
-    color: black;
-    font-size: 36px;
-    position: fixed;
-    top: 83px;
-    left: 50%;
-    transform: translate(-50%);
-}
-.attacks{
-    display:flex;
-    flex-direction:row; position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%);
-    font-size: 30px;
-    gap:20rem;
-}
+@media screen and (max-width: 601px) {
+ .attacks {
+        display: flex;
+        flex-direction: row;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%);
+        font-size: 30px;
+        gap: 10rem;
+    }
+
 .attack {
     border-radius: 5px;
-   width:100px;
-   height:100px;
-   color:none
-   
+    width: 20px;
+    height: 20px;
 }
-    .attack > img {
-        top: -40px;
-        left: -20px;
-        position: fixed;
-        width: 180px;
-        
-    }
+
+        .attack > img {
+            top: -40px;
+            left: -20px;
+            position: fixed;
+            width: 100px;
+        }
 
 .attack2 {
     border-radius: 5px;
-    width: 100px;
-    height: 100px;
-    color: none
+    width: 20px;
+    height: 20px;
+   
 }
-    .attack2 > img {
-        top: -40px;
-        left: 400px;
-        position: fixed;
-        width: 180px;
+
+        .attack2 > img {
+            top: -40px;
+            left:140px;
+            position: fixed;
+            width: 100px;
+        }
+
+}
+    .health-bar {
+        height: 100%;
+        background-color: red;
+        transition: width 0.3s ease-in-out;
     }
-.holup {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-evenly;
-}
+
+    .inventory_menu.open h1 {
+        margin-left: 2em;
+    }
+
+    .inventory_menu h1 {
+        margin-left: 2em;
+        font-size: 32px;
+    }
+
+    .inventory_menu {
+        text-align: center;
+    }
+
+    .inventory_name {
+        font-size: 32px;
+        margin-left: 60px;
+    }
+
+    .battle_background {
+        height: 100vh;
+        width: 100vw;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        text-align: center;
+        background-size: cover;
+        background-position: center;
+    }
+
+    .Enemy {
+        color:white;
+        position: fixed;
+        font-size:20px;
+        top: 20px;
+        left: 50%;
+        transform: translate(-50%);
+    }
+
+    .inventory_item_img {
+        width: 40px;
+        height: auto;
+    }
+
+    .Enemy_health {
+        color: white;
+      
+        position: fixed;
+        top: 83px;
+        left: 50%;
+        transform: translate(-50%);
+    }
+
+   
+    .holup {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+    }

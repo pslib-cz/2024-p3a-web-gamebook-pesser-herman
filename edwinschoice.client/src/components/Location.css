@@ -4,192 +4,246 @@ body {
     margin: 0;
     overflow: hidden; 
 }
-
-.location_background {
-    height: 100vh;
-    width: 100vw;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    position: relative; 
-    text-align: center;
-    background-size: cover;
-    background-position: center;
-}
-
-.location_title {
-    position: fixed;
-    top: 20px;
-}
-
-.the_location {
-    height: 100vh;
-    width: 100vw;
-    position: relative; 
-}
-.inventory_container{
-
-    display:flex;
-    flex-direction:row;
-    justify-content:space-evenly
-}
-.player-stats {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    background: rgba(0, 0, 0, 0.6);
-    padding: 10px;
-    border-radius: 10px;
-    color: white;
-}
-.inventory_bag {
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    width: 90px;
-    height: 90px;
-    cursor: pointer;
-    background-size: cover;
-    background-position: center;
-    z-index: 100;
-}
-
-.inventory_menu {
-    flex-direction:column;
-    z-index: 1;
-    display: flex;
-    position: fixed;
-    top: 0;
-    left: -350px;
-    width: 300px;
-    height: 100vh;
-    background: rgba(0, 0, 0, 0.8);
-    color: white;
-    padding: 20px;
-    transition: transform 0.3s ease-in-out;
-}
-
-.inventory_menu.open h1 {
-    margin-left:2em;
-}
-.inventory_menu h1{
-    margin-left: 2em;
-}
-
-.inventory_menu.open {
-    transform: translateX(349px); 
-}
-
-.player-stats > p {
-    color: red;
-}
-
-.text_box {
-    position: absolute;
-    width: 80%;
-    max-height:300px;
-    min-height:150px;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    bottom: 20px;
-    border-radius: 20px;
-    display: flex;
-    justify-content: start;
-    padding: 20px;
-    overflow: hidden; 
-}
-
-.text_box > p {
-    font-size: 2rem;
-    color: aliceblue;
-    margin: 0;
-    text-align: center;
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-    width: 100%;
-}
-.item_name{
-    font-weight: 900;
-}
-
-.item-container {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center;
-}
-
-.item-container img {
-    cursor: pointer;
-    max-width: 150px;
-    height: auto;
-}
-
-.connections {
-    font-weight:700;
-    font-size:30px;
-    position: relative;
-    bottom: 10%;
-    color: white;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    top: -220px;
-    cursor: pointer;
-    text-shadow:
-        -1px -1px 2px black, 
-        1px -1px 2px black,
-        -1px 1px 2px black, 
-        1px 1px 2px black;
-}
-    
-.connections div:hover{
-    color:red;
-}
-    .connections button {
-        padding: 10px 15px;
-        font-size: 1.2rem;
-        cursor: pointer;
-        background: white;
-        border: 2px solid black;
-        border-radius: 5px;
+@media screen and (min-width: 601px) {
+    .inventory_menu.open {
+       
+            transform: translateX(349px);
+        }
+    .inventory_menu {
+        flex-direction: column;
+        z-index: 1;
+        display: flex;
+        position: fixed;
+        top: 0;
+        left: -350px;
+        width: 300px;
+        height: 100vh;
+        background: rgba(0, 0, 0, 0.8);
+        color: white;
+        padding: 20px;
+        transition: transform 0.3s ease-in-out;
+        font-size:25px;
     }
-.the_choice {
-    width: 100vw;
-    height: 100vh;
+  
+    .item-container img {
+        cursor: pointer;
+        max-width: 150px;
+        height: auto;
+    }
+  .location_title {
     position: fixed;
     top: 0;
-    left: 0;
-    background: rgba(0, 0, 0, 0.8); 
-    opacity: 0; 
-    pointer-events: none;
-    z-index: 1; 
-    transition: opacity 0.3s ease; 
+    font-size: 60px;
+}
+    .text_box > p {
+        font-size: 30px;
+        color: aliceblue;
+        margin: 0;
+        text-align: center;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        width: 100%;
+    }
+
+    .connections {
+        font-weight: 700;
+        font-size: 35px;
+        position: relative;
+        bottom: 10%;
+        color: white;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        cursor: pointer;
+        text-shadow: -1px -1px 2px black, 1px -1px 2px black, -1px 1px 2px black, 1px 1px 2px black;
+    }
+}
+    .location_background {
+        height: 100vh;
+        width: 100vw;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        text-align: center;
+        background-size: cover;
+        background-position: center;
+    }
+@media screen and (max-width: 601px) {  
+   
+    .inventory_menu {
+        flex-direction: column;
+        z-index: 1;
+        display: flex;
+        position: fixed;
+        top: 0;
+        left: -350px;
+        width: 300px;
+        height: 100vh;
+        background: rgba(0, 0, 0, 0.8);
+        color: white;
+        padding: 20px;
+        transition: transform 0.3s ease-in-out;
+    }
+
+    
+    .connections {
+        font-weight: 700;
+        font-size: 20px;
+        position: relative;
+        bottom: 10%;
+        color: white;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        cursor: pointer;
+        text-shadow: -1px -1px 2px black, 1px -1px 2px black, -1px 1px 2px black, 1px 1px 2px black;
+    }
+    .location_title {
+        position: fixed;
+        top: 0;
+        font-size: 30px;
+    } 
+    .text_box > p {
+            font-size: 15px;
+            color: aliceblue;
+            margin: 0;
+            text-align: center;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            width: 100%;
+        }
+    .item-container img {
+            cursor: pointer;
+            max-width: 60px;
+            height: auto;
+        }
 }
 
-.inventory_item {
-    display: flex;
-   
-    align-items: center; 
+    .the_location {
+        height: 100vh;
+        width: 100vw;
+        position: relative;
+    }
+
+    .inventory_container {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly
+    }
+
+    .player-stats {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        background: rgba(0, 0, 0, 0.6);
+        padding: 10px;
+        border-radius: 10px;
+        color: white;
+    }
+
+    .inventory_bag {
+        position: absolute;
+        top: 50px;
+        left: 10px;
+        width: 90px;
+        height: 90px;
+        cursor: pointer;
+        background-size: cover;
+        background-position: center;
+        z-index: 100;
+    }
+
   
-}
-.holup{
-    display:flex;
-    flex-direction:row;
-    justify-content:space-evenly;
+       
+
+      
+
+    .player-stats > p {
+        color: red;
+    }
+
+    .text_box {
+        position: absolute;
+        width: 80%;
+        max-height: 300px;
+        min-height: 150px;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        bottom: 20px;
+        border-radius: 20px;
+        display: flex;
+        justify-content: start;
+        padding: 20px;
+        overflow: hidden;
+    }
+
+       
+
+    .item_name {
+        font-weight: 900;
+    }
+
+    .item-container {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+    }
+
+        
+
     
-}
- ul{
-    padding: unset;
-}
-.inventory_icon {
-    width: 50px;
-    height: 50px;
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-    filter: invert(1);
-}
+
+        .connections div:hover {
+            color: red;
+        }
+
+        .connections button {
+            padding: 10px 15px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            background: white;
+            border: 2px solid black;
+            border-radius: 5px;
+        }
+
+    .the_choice {
+        width: 100vw;
+        height: 100vh;
+        position: fixed;
+        top: 0;
+        left: 0;
+        background: rgba(0, 0, 0, 0.8);
+        opacity: 0;
+        pointer-events: none;
+        z-index: 1;
+        transition: opacity 0.3s ease;
+    }
+
+    .inventory_item {
+        display: flex;
+        align-items: center;
+    }
+
+    .holup {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+    }
+
+    ul {
+        padding: unset;
+    }
+
+    .inventory_icon {
+        width: 50px;
+        height: 50px;
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+        filter: invert(1);
+    }
