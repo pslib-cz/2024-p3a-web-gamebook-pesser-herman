@@ -203,13 +203,20 @@ const Battle: React.FC = () => {
         <div className="battle_location">
             <div className="battle_background" style={{ backgroundImage: `url(${apiUrl}${state.battle.battleImagePath})` }}></div>
             <h1 className="Enemy">Battle: {state.battle.enemyName}</h1>
-            <p className="Enemy_health">Enemy Health: {state.enemyHealth}</p>
+            <div className="health-bar-container">
+                <div
+                    className="health-bar"
+                    style={{ width: `${(state.enemyHealth! / state.battle!.enemyHealth) * 100}%` }}
+                ></div>
+            </div>
+            <p className="Enemy_health">HP/{state.enemyHealth}</p>
+            <div className="attacks">
             <button onClick={handleAttack} className="attack">
-                <img src={`${apiUrl}/items/NormalAttack.png`} alt="Normální Útok" style={{ width: "80px", height: "80px" }} />
+                <img src={`${apiUrl}/items/NormalAttack.png`} alt="Normální Útok"  />
             </button>
             <button onClick={handleHeavyAttack} className="attack2">
-                <img src={`${apiUrl}/items/StrongAttack.png`} alt="Silný Útok" style={{ width: "80px", height: "80px" }} />
-            </button> @{/*DAVE PAK TOMUHLE ÚTOKU DEJ STEJNOU CLASSU JAKO TOMU PRVNÍMU, MNÌ TO JEN NÌJAK BLBLO A NECHTÌL JSEM TI DO TO HRABAT, TUHLE ZPRÁVU PAK SMAŽ A TU CLASSU ATTACK2 V BATTLE.CSS TAKY*/ }
+                <img src={`${apiUrl}/items/StrongAttack.png`} alt="Silný Útok"  />
+            </button> </div>
 
             <div className="inventory_bag" onClick={toggleInventory} style={{ backgroundImage: `url(${apiUrl}/items/inventory.png)` }}></div>
 

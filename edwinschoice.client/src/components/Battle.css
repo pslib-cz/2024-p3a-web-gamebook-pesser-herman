@@ -1,3 +1,21 @@
+.health-bar-container {
+    width: 200px;
+    height: 20px;
+    background-color: #444;
+    border: 2px solid #222;
+    border-radius: 5px;
+    overflow: hidden;
+    left: 50%;
+    transform: translate(-50%);
+    top: 100px;
+    position: fixed;
+}
+
+.health-bar {
+    height: 100%;
+    background-color: red;
+    transition: width 0.3s ease-in-out;
+}
 
 .inventory_menu.open h1 {
     margin-left: 2em;
@@ -38,30 +56,49 @@
     height: auto;
 }
 .Enemy_health {
-    font-size: 24px;
+    color: black;
+    font-size: 36px;
     position: fixed;
-    top: 80px;
+    top: 83px;
     left: 50%;
     transform: translate(-50%);
 }
-.attack {
-    border-radius:5px;
-    position: fixed;
+.attacks{
+    display:flex;
+    flex-direction:row; position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%);
-    font-size:30px;
+    font-size: 30px;
+    gap:20rem;
 }
+.attack {
+    border-radius: 5px;
+   width:100px;
+   height:100px;
+   color:none
+   
+}
+    .attack > img {
+        top: -40px;
+        left: -20px;
+        position: fixed;
+        width: 180px;
+        
+    }
 
 .attack2 {
     border-radius: 5px;
-    position: fixed;
-    top: 60%;
-    left: 50%;
-    transform: translate(-50%);
-    font-size: 30px;
+    width: 100px;
+    height: 100px;
+    color: none
 }
-
+    .attack2 > img {
+        top: -40px;
+        left: 400px;
+        position: fixed;
+        width: 180px;
+    }
 .holup {
     display: flex;
     flex-direction: row;
