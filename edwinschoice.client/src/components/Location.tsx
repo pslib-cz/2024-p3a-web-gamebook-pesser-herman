@@ -68,7 +68,6 @@ function Location() {
         fetch(`${apiUrl}/api/Locations/${id}`)
             .then((response) => response.json())
             .then((data: LocationData) => {
-                // If item is not reobtainable and is already obtained, remove it
                 if (data.item && !data.itemReobtainable && obtainedItems.includes(data.item.itemsId)) {
                     data.item = null;
                     data.itemId = null;
@@ -108,6 +107,14 @@ function Location() {
             playerStats.equippedWeapon?.itemsId === item.itemsId ||
             playerStats.equippedArmor?.itemsId === item.itemsId
         );
+    };
+
+    const handleEquip = (item: Item) => {
+        inventoryDispatch({ type: "EQUIP_ITEM", payload: item });
+    };
+
+    const handleUnequip = (item: Item) => {
+        inventoryDispatch({ type: "UNEQUIP_ITEM", payload: item });
     };
 
     const handleItemClick = () => {
@@ -195,15 +202,9 @@ function Location() {
                                     )}
                                     {!item.isConsumable && !item.forStory && (
                                         isItemEquipped(item) ? (
-                                            <span>Nasazeno</span>
+                                            <button onClick={() => handleUnequip(item)}>Sundat</button>
                                         ) : (
-                                            <button
-                                                onClick={() =>
-                                                    inventoryDispatch({ type: "EQUIP_ITEM", payload: item })
-                                                }
-                                            >
-                                                Nasadit
-                                            </button>
+                                            <button onClick={() => handleEquip(item)}>Nasadit</button>
                                         )
                                     )}
                                 </li>

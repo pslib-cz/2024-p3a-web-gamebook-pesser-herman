@@ -135,6 +135,38 @@ const Battle: React.FC = () => {
         }
     };
 
+    const handleHeavyAttack = () => {
+        if (!state.battle || state.enemyHealth === null) return;
+        const randomChance = Math.random(); 
+        console.log(randomChance);
+        if (randomChance >= 0.5) {
+            const playerDamage = Math.max((playerStats.attack * 2) - state.battle.enemyDefense, 0);
+            const newEnemyHealth = state.enemyHealth - playerDamage;
+
+            if (newEnemyHealth <= 0) {
+                localDispatch({ type: "SET_ENEMY_HEALTH", payload: 0 });
+                const exitLocation = getExitLocation();
+                if (exitLocation !== null) {
+                    saveGame(exitLocation);
+                    navigate(`/location/${exitLocation}`);
+                }
+                return;
+            }
+
+            localDispatch({ type: "SET_ENEMY_HEALTH", payload: newEnemyHealth });
+        }
+
+        const enemyDamage = Math.max(state.battle.enemyAttack - playerStats.defense, 0);
+        const newPlayerHealth = playerStats.health - enemyDamage;
+
+        if (newPlayerHealth <= 0) {
+            dispatch({ type: "SET_PLAYER_STATS", payload: { ...playerStats, health: 0 } });
+            navigate("/location/0");
+        } else {
+            dispatch({ type: "SET_PLAYER_STATS", payload: { ...playerStats, health: newPlayerHealth } });
+        }
+    };
+
     const handleHeal = (item: Item) => {
         const healedHealth = Math.min(playerStats.health + (item.health || 0), 100);
         const enemyDamage = Math.max(state.battle!.enemyAttack - playerStats.defense, 0);
@@ -154,6 +186,10 @@ const Battle: React.FC = () => {
         dispatch({ type: "EQUIP_ITEM", payload: item });
     };
 
+    const handleUnequip = (item: Item) => {
+        dispatch({ type: "UNEQUIP_ITEM", payload: item });
+    };
+
     if (state.loading) return <p>Loading battle...</p>;
     if (!state.battle) return <p>Battle not found</p>;
 
@@ -163,6 +199,7 @@ const Battle: React.FC = () => {
             <h1 className="Enemy">Battle: {state.battle.enemyName}</h1>
             <p className="Enemy_health">Enemy Health: {state.enemyHealth}</p>
             <button onClick={handleAttack} className="attack">Attack</button>
+            <button onClick={handleHeavyAttack} className="attack2">Heavy Attack (50% Miss)</button> @{/*DAVE PAK TOMUHLE ÚTOKU DEJ STEJNOU CLASSU JAKO TOMU PRVNÍMU, MNÌ TO JEN NÌJAK BLBLO A NECHTÌL JSEM TI DO TO HRABAT, TUHLE ZPRÁVU PAK SMAŽ A TU CLASSU ATTACK2 V BATTLE.CSS TAKY*/ }
 
             <div className="inventory_bag" onClick={toggleInventory} style={{ backgroundImage: `url(${apiUrl}/items/inventory.png)` }}></div>
 
@@ -200,7 +237,7 @@ const Battle: React.FC = () => {
                             )}
                             {!item.isConsumable && !item.forStory && (
                                 isItemEquipped(item) ? (
-                                    <span>Nasazeno</span>
+                                    <button onClick={() => handleUnequip(item)}>Sundat</button>
                                 ) : (
                                     <button onClick={() => handleEquip(item)}>Nasadit</button>
                                 )

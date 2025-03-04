@@ -37,6 +37,7 @@ export type Action =
     | { type: "ADD_ITEM"; payload: Item }
     | { type: "USE_ITEM"; payload: Item }
     | { type: "EQUIP_ITEM"; payload: Item }
+    | { type: "UNEQUIP_ITEM"; payload: Item }
     | { type: "MARK_OBTAINED"; payload: number }
     | { type: "SAVE_LOCATION"; payload: number }
     | { type: "LOAD_GAME"; payload: State };
@@ -105,6 +106,22 @@ function inventoryReducer(state: State, action: Action): State {
                     (state.playerStats.equippedArmor?.defense || 0);
                 updatedStats.equippedArmor = item;
             }
+            return { ...state, playerStats: updatedStats };
+        }
+
+        case "UNEQUIP_ITEM": {
+            const item = action.payload;
+            const updatedStats = { ...state.playerStats };
+
+            if (item.itemsId === state.playerStats.equippedWeapon?.itemsId) {
+                updatedStats.attack -= item.attack ?? 0;
+                updatedStats.equippedWeapon = null;
+            }
+            if (item.itemsId === state.playerStats.equippedArmor?.itemsId) {
+                updatedStats.defense -= item.defense ?? 0;
+                updatedStats.equippedArmor = null;
+            }
+
             return { ...state, playerStats: updatedStats };
         }
 
