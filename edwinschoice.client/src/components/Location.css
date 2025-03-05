@@ -22,7 +22,7 @@ body {
         color: white;
         padding: 20px;
         transition: transform 0.3s ease-in-out;
-        font-size:25px;
+       
     }
   
     .item-container img {
