@@ -70,7 +70,10 @@ body {
         background-size: cover;
         background-position: center;
     }
-@media screen and (max-width: 601px) {  
+@media screen and (max-width: 601px) {
+    .inventory_menu.open {
+        transform: translateX(349px);
+    }
    
     .inventory_menu {
         flex-direction: column;

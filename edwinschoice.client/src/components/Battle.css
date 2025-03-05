@@ -11,6 +11,7 @@
     position: fixed;
 }
 @media screen and (min-width: 601px) {
+ 
 
     .Enemy {
         color: white;
@@ -61,6 +62,7 @@
 
 }
 @media screen and (max-width: 601px) {
+   
     .Enemy {
         color: white;
         position: fixed;
