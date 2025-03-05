@@ -12,6 +12,16 @@
 }
 @media screen and (min-width: 601px) {
 
+    .Enemy {
+        color: white;
+        position: fixed;
+        font-size: 20px;
+        top: 20px;
+        left: 50%;
+        transform: translate(-50%);
+        font-size:40px;
+    }
+
     .attacks {
         display: flex;
         flex-direction: row;
@@ -51,6 +61,15 @@
 
 }
 @media screen and (max-width: 601px) {
+    .Enemy {
+        color: white;
+        position: fixed;
+        font-size: 20px;
+        top: 20px;
+        left: 50%;
+        transform: translate(-50%);
+    }
+
  .attacks {
         display: flex;
         flex-direction: row;
@@ -127,15 +146,7 @@
         background-position: center;
     }
 
-    .Enemy {
-        color:white;
-        position: fixed;
-        font-size:20px;
-        top: 20px;
-        left: 50%;
-        transform: translate(-50%);
-    }
-
+  
     .inventory_item_img {
         width: 40px;
         height: auto;
