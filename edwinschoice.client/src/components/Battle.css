@@ -1,5 +1,8 @@
+
+@media screen and (min-width: 601px) {
+ 
 .health-bar-container {
-    width: 200px;
+    width: 400px;
     height: 20px;
     background-color: #444;
     border: 2px solid #222;
@@ -10,9 +13,6 @@
     top: 100px;
     position: fixed;
 }
-@media screen and (min-width: 601px) {
- 
-
     .Enemy {
         color: white;
         position: fixed;
@@ -62,7 +62,18 @@
 
 }
 @media screen and (max-width: 601px) {
-   
+    .health-bar-container {
+        width: 200px;
+        height: 20px;
+        background-color: #444;
+        border: 2px solid #222;
+        border-radius: 5px;
+        overflow: hidden;
+        left: 50%;
+        transform: translate(-50%);
+        top: 100px;
+        position: fixed;
+    }
     .Enemy {
         color: white;
         position: fixed;
