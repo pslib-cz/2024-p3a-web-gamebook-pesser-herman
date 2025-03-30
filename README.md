@@ -3,8 +3,8 @@
 ## Diagram:
 ![image](https://github.com/user-attachments/assets/29007550-f763-456a-9ca3-5fbbc2001f5b)
 
-## O čemje hra?
-Vaše dcera je smrtelněnemocná a vy potřebujete peníze na lék, tak jdete do města pro nějakou práci, když tu narazíte na podivného muže, který vám nabídne peníze za zabití určitého šlechtice.
+## O čem je hra?
+Vaše dcera je smrtelně nemocná a vy potřebujete peníze na lék, tak jdete do města pro nějakou práci, když tu narazíte na podivného muže, který vám nabídne peníze za zabití určitého šlechtice.
 
 ## Hráč
 ### Má 3 staty:
