@@ -7,6 +7,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edwinschoice.Server", "Edwi
 EndProject
 Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "edwinschoice.client", "edwinschoice.client\edwinschoice.client.esproj", "{3478E590-20B3-4792-B939-1CC96D09264F}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "data", "data", "{86FF1FF3-CA86-4E57-8476-FE78EADC6A49}"
+	ProjectSection(SolutionItems) = preProject
+		Edwinschoice.Server\Data\Game_Data.db = Edwinschoice.Server\Data\Game_Data.db
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
