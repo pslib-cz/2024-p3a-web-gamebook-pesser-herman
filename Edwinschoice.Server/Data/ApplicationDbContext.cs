@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 
-namespace Edwinschoice.Server.data
+namespace Edwinschoice.Server.Data
 {
     public class ApplicationDbContext : DbContext
     {

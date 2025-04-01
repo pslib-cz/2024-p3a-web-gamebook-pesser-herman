@@ -20,7 +20,7 @@
         "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "Microsoft.AspNetCore.SpaProxy"
       },
       "dotnetRunMessages": true,
-      "applicationUrl": "https://localhost:7083;http://localhost:5088"
+      "applicationUrl": "https://id-43.pslib.cloud;http://id-43.pslib.cloud"
     },
     "IIS Express": {
       "commandName": "IISExpress",
