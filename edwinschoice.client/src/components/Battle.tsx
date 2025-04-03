@@ -145,7 +145,7 @@ const Battle: React.FC = () => {
         if (!state.battle || state.enemyHealth === null) return;
         const randomChance = Math.random(); 
         console.log(randomChance);
-        if (randomChance >= 0.8) {
+        if (randomChance >= 0.7) {
             const playerDamage = Math.max((playerStats.attack * 2) - state.battle.enemyDefense, 0);
             const newEnemyHealth = state.enemyHealth - playerDamage;
 
